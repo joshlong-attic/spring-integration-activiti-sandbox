@@ -1,0 +1,24 @@
+im thinking o a way to build on the support already present to enable people to use Spring integration and Activiti together. 
+
+As it stands, there's a gateway component that lets me propagate execution to a component running inside of Spring Integration. One ideal of this projet is to describe a component model that gets invoked as a consequence of of any state to which its attached. Example:
+
+@Component
+public class Handler { 
+  @ActivitiState ( "confirm-receipt") t
+  public void myHandle ( @ProcessVariable("customerId") long customerId, @ProcessVariables Map<String,Object> variables, ExecutionContext ctx ) throws Throwable { 
+    // custom logic here
+  }
+} 
+
+or, to signa which transition the component needs to take:
+
+@Component
+public class Handler { 
+  @ActivitiState ( "confirm-receipt") 
+  public String myHandle ( @ProcessVariable("customerId") long customerId  ) throws Throwable { 
+    // custom logic here
+   return "failure"; 
+  }
+} 
+
+ in that example the return value will be used to look up the next activiti state. 
