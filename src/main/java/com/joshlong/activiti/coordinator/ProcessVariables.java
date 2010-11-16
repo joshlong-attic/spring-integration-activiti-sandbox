@@ -13,21 +13,19 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package com.joshlong.activiti.components;
+package com.joshlong.activiti.coordinator;
 
-import org.springframework.integration.activiti.gateway.AsyncActivityBehaviorMessagingGateway;
+import java.lang.annotation.*;
 
 /**
- * This component extends the {@link org.springframework.integration.activiti.gateway.AsyncActivityBehaviorMessagingGateway}.
- *
- * The idea is that we want a conventions-over-configuration based approach to dispatchingstate execution to other
- * nodes that are using the client side counterpart to this class.
+ * Annotation used on method signatures to tell the runtime to inject the current process' process variables as a {@link java.util.Map<String,Object>}.
  *
  * @author Josh Long
- * @since 5.0
+ * @since 1.0
  *
- * @see org.springframework.integration.activiti.gateway.AsyncActivityBehaviorMessagingGateway
  */
-public class OutboundMultiplexingGateway extends AsyncActivityBehaviorMessagingGateway  {
-	
-}
+
+@Target({ElementType.PARAMETER, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface ProcessVariables {}
