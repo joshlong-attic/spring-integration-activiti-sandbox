@@ -15,6 +15,7 @@
  */
 package com.joshlong.activiti.coordinator;
 
+import com.joshlong.activiti.coordinator.annotations.ActivitiHandler;
 import org.springframework.integration.Message;
 import org.springframework.integration.MessagingException;
 import org.springframework.integration.core.MessageHandler;
@@ -23,9 +24,13 @@ import org.springframework.integration.core.MessageHandler;
  * Simple dispatcher responsible for dispatching to
  * the appropriately registered {@link com.joshlong.activiti.coordinator.annotations.ActivitiHandler}
  * components.
+ *
+ * @author Josh Long
  */
-
 public class ActivitiDispatcherMessageHandler implements MessageHandler {
+
+	 
+
 	public void handleMessage(Message<?> message) throws MessagingException {
 
 	}
