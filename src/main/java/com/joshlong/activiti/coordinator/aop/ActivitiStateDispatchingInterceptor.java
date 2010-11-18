@@ -34,10 +34,13 @@ public class ActivitiStateDispatchingInterceptor  implements MethodInterceptor {
 
 	private volatile ChannelResolver channelResolver;
 
-	private final ParameterNameDiscoverer parameterNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
+	private final ParameterNameDiscoverer parameterNameDiscoverer =  new LocalVariableTableParameterNameDiscoverer();
 
 
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-	return null; // todo 
-	}
+        System.out.println( "invoking the method before");
+        Object res = invocation.proceed();
+        System.out.println( "invoking the method after");
+	    return res;
+    }
 }
