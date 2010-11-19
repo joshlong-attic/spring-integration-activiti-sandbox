@@ -1,8 +1,8 @@
 package com.joshlong.activiti.coordinator.registration1;
 
-import com.joshlong.activiti.coordinator.OutboundActivitiCoodinatorGateway;
+import com.joshlong.activiti.coordinator.CoordinatorGatewayProducer;
 import com.joshlong.activiti.coordinator.aop.ActivitiStateAnnotationBeanPostProcessor;
-import com.joshlong.activiti.coordinator.aop.registry.ActivitiStateHandlerRegistry;
+import com.joshlong.activiti.coordinator.registry.ActivitiStateHandlerRegistry;
 import org.activiti.engine.DbSchemaStrategy;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.impl.cfg.spring.ProcessEngineFactoryBean;
@@ -40,14 +40,14 @@ public class RegistrationConfiguration {
     private ProcessEngine processEngine;
 
     @Bean
-    public OutboundActivitiCoodinatorGateway gateway() {
-        OutboundActivitiCoodinatorGateway outboundActivitiCoodinatorGateway = new OutboundActivitiCoodinatorGateway();
-        outboundActivitiCoodinatorGateway.setReplyChannel(this.response);
-        outboundActivitiCoodinatorGateway.setRequestChannel(this.request);
-        outboundActivitiCoodinatorGateway.setProcessEngine(this.processEngine);
-        outboundActivitiCoodinatorGateway.setForwardProcessVariablesAsMessageHeaders(true);
-        outboundActivitiCoodinatorGateway.setUpdateProcessVariablesFromReplyMessageHeaders(true);
-        return outboundActivitiCoodinatorGateway;
+    public CoordinatorGatewayProducer gateway() {
+        CoordinatorGatewayProducer coordinatorGatewayProducer = new CoordinatorGatewayProducer();
+        coordinatorGatewayProducer.setReplyChannel(this.response);
+        coordinatorGatewayProducer.setRequestChannel(this.request);
+        coordinatorGatewayProducer.setProcessEngine(this.processEngine);
+        coordinatorGatewayProducer.setForwardProcessVariablesAsMessageHeaders(true);
+        coordinatorGatewayProducer.setUpdateProcessVariablesFromReplyMessageHeaders(true);
+        return coordinatorGatewayProducer;
     }
 
     @Bean

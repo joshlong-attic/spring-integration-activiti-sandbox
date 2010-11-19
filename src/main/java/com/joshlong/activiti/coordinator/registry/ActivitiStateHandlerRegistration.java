@@ -1,14 +1,10 @@
-package com.joshlong.activiti.coordinator.aop.registry;
+package com.joshlong.activiti.coordinator.registry;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.springframework.util.StringUtils;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * an instance of a bean discovered to both have an {@link com.joshlong.activiti.coordinator.annotations.ActivitiHandler}
@@ -86,9 +82,5 @@ public class ActivitiStateHandlerRegistration {
      return ToStringBuilder.reflectionToString(this);
     }
 
-    public String getRegistrationKey(){
-        return org.apache.commons.lang.StringUtils.defaultString(this.stateName)+":"+
-                org.apache.commons.lang.StringUtils.defaultString( this.processName);
-    }
 
 }

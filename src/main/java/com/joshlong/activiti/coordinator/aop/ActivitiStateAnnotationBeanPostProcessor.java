@@ -1,9 +1,8 @@
 package com.joshlong.activiti.coordinator.aop;
 
 import com.joshlong.activiti.coordinator.annotations.*;
-import com.joshlong.activiti.coordinator.aop.registry.ActivitiStateHandlerRegistration;
-import com.joshlong.activiti.coordinator.aop.registry.ActivitiStateHandlerRegistry;
-import org.springframework.aop.framework.ProxyConfig;
+import com.joshlong.activiti.coordinator.registry.ActivitiStateHandlerRegistration;
+import com.joshlong.activiti.coordinator.registry.ActivitiStateHandlerRegistry;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;

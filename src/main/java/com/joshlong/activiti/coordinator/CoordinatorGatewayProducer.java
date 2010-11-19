@@ -14,17 +14,11 @@
  *     limitations under the License.
  */
 package com.joshlong.activiti.coordinator;
-
+import static com.joshlong.activiti.coordinator.CoordinatorConstants.* ;
 import org.activiti.engine.impl.repository.ProcessDefinitionEntity;
-import org.activiti.engine.repository.ProcessDefinition;
-
 import org.activiti.pvm.activity.ActivityExecution;
 import org.activiti.pvm.process.PvmProcessDefinition;
-
-import org.apache.commons.beanutils.PropertyUtils;
-
 import org.springframework.integration.activiti.gateway.AsyncActivityBehaviorMessagingGateway;
-
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
@@ -42,10 +36,11 @@ import java.util.Map;
  *
  * @author Josh Long
  * @see org.springframework.integration.activiti.gateway.AsyncActivityBehaviorMessagingGateway
- * @since 5.0
+ * @since 1.0
  */
-public class OutboundActivitiCoodinatorGateway
-    extends AsyncActivityBehaviorMessagingGateway {
+public class CoordinatorGatewayProducer extends AsyncActivityBehaviorMessagingGateway {
+
+
     protected String ACTIVITI_COORDINATOR_BASE_HEADER = "activiti-coordinator".toUpperCase(Locale.ENGLISH);
 
     protected String keyName(String i) {
@@ -82,10 +77,10 @@ public class OutboundActivitiCoodinatorGateway
     protected Map<String, Object> outboundMessageConfigurationHook(
         ActivityExecution activityExecution) throws Exception {
         Map<String, Object> headers = new HashMap<String, Object>();
-        headers.put(keyName("execution_id"), activityExecution.getId());
-        headers.put(keyName("activiti_id"), activityExecution.getActivity().getId());
-        headers.put(keyName("process_id"), activityExecution.getActivity().getProcessDefinition().getId());
-        headers.put(keyName("process_name"), discoverProcessName(activityExecution.getActivity().getProcessDefinition()));
+        headers.put(keyName(EXECUTION_ID), activityExecution.getId());
+        headers.put(keyName(ACTIVITI_ID), activityExecution.getActivity().getId());
+        headers.put(keyName(PROC_ID), activityExecution.getActivity().getProcessDefinition().getId());
+        headers.put(keyName(PROC_NAME), discoverProcessName(activityExecution.getActivity().getProcessDefinition()));
         return headers;
     }
 }

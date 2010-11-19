@@ -23,13 +23,9 @@ public class RegistrationMain {
 
         ProcessEngine processEngine = cax.getBean(ProcessEngine.class);
 
-   /*     processEngine.getRepositoryService().createDeployment().
-                addClasspathResource("processes/registration.bpmn20.xml").deploy();*/
-
         Map<String, Object> vars = new HashMap<String, Object>() ;
         vars.put( "customerId", 23) ;
-        processEngine.getRuntimeService().startProcessInstanceByKey(
-                "customer-signup-process",vars);
+        processEngine.getRuntimeService().startProcessInstanceByKey( "customer-signup-process",vars);
 
 
         Thread.sleep(1000 * 30 );
