@@ -7,7 +7,7 @@
 			 expressionLanguage="http://www.w3.org/1999/XPath"
 			 targetNamespace="http://www.activiti.org/bpmn2.0">
 
-	<process id="customer-signup-process">
+	<process id="customer-fullfillment-process">
 
 		<startEvent id="start"/>
 			<sequenceFlow sourceRef="start"   targetRef="customer-signup" id="a"/>
