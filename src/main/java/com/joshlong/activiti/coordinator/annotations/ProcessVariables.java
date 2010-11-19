@@ -25,7 +25,7 @@ import java.lang.annotation.*;
  *
  */
 
-@Target({ElementType.PARAMETER, ElementType.METHOD})
+@Target({ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ProcessVariables {}

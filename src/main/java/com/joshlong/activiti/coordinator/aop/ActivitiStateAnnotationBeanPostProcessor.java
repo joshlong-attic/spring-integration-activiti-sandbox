@@ -1,9 +1,6 @@
 package com.joshlong.activiti.coordinator.aop;
 
-import com.joshlong.activiti.coordinator.annotations.ActivitiHandler;
-import com.joshlong.activiti.coordinator.annotations.ActivitiState;
-import com.joshlong.activiti.coordinator.annotations.ProcessVariable;
-import com.joshlong.activiti.coordinator.annotations.ProcessVariables;
+import com.joshlong.activiti.coordinator.annotations.*;
 import com.joshlong.activiti.coordinator.aop.registry.ActivitiStateHandlerRegistration;
 import com.joshlong.activiti.coordinator.aop.registry.ActivitiStateHandlerRegistry;
 import org.springframework.aop.framework.ProxyConfig;
@@ -23,8 +20,8 @@ import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -99,35 +96,34 @@ public class ActivitiStateAnnotationBeanPostProcessor extends ProxyConfig
                     processName = activitiState.processName();
 
                 String stateName = activitiState.stateName();
-                if(!StringUtils.hasText(stateName))
-                    stateName= activitiState.value();
+                if (!StringUtils.hasText(stateName))
+                    stateName = activitiState.value();
 
                 Assert.notNull(stateName, "You must provide a stateName!");
-                
-                Set<String> vars = new HashSet<String>();
-
-                // now we sift through the arrangement of process variables that are expected
-
-
-                ActivitiStateHandlerRegistration registration = new ActivitiStateHandlerRegistration(
-                        vars, method, bean, stateName, beanName, processName);
-
-                System.out.println(registration+"") ;
-
+                Map<Integer, String> vars = new HashMap<Integer, String>();
                 Annotation[][] paramAnnotationsArray = method.getParameterAnnotations();
 
-                for(Annotation [] paramAnnotations : paramAnnotationsArray){
-                    for(Annotation pa : paramAnnotations ){
-                        if(pa instanceof ProcessVariable){
+                int ctr = 0;
+                int pvMapIndex = -1;
+                int procIdIndex = -1;
+                for (Annotation[] paramAnnotations : paramAnnotationsArray) {
+                    ctr += 1;
+                    for (Annotation pa : paramAnnotations) {
+                        if (pa instanceof ProcessVariable) {
                             ProcessVariable pv = (ProcessVariable) pa;
-                            String pvName = pv.value() ;
-                        }
-                        if(pa instanceof ProcessVariables){
-
+                            String pvName = pv.value();
+                            vars.put(ctr, pvName);
+                        } else if (pa instanceof ProcessVariables) {
+                            pvMapIndex = ctr;
+                        } else if (pa instanceof ProcessId) {
+                            procIdIndex = ctr;
                         }
                     }
                 }
 
+                ActivitiStateHandlerRegistration registration = new ActivitiStateHandlerRegistration(
+                        vars, method, bean, stateName, beanName, pvMapIndex, procIdIndex, processName);
+                System.out.println(registration + "");
                 registry.registerActivitiStateHandler(registration);
 
 

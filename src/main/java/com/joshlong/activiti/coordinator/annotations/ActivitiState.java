@@ -25,7 +25,7 @@ import java.lang.annotation.*;
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@Documented//@Component
+@Documented
 public @interface ActivitiState {
     /**
      * the business process name

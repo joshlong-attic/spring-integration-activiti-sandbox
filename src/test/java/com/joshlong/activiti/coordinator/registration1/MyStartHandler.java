@@ -2,6 +2,7 @@ package com.joshlong.activiti.coordinator.registration1;
 
 import com.joshlong.activiti.coordinator.annotations.ActivitiHandler;
 import com.joshlong.activiti.coordinator.annotations.ActivitiState;
+import com.joshlong.activiti.coordinator.annotations.ProcessId;
 import com.joshlong.activiti.coordinator.annotations.ProcessVariable;
 
 import javax.annotation.PostConstruct;
@@ -15,7 +16,7 @@ public class MyStartHandler {
 	}
 
     @ActivitiState( processName = "customer-signup-process", stateName = "start-signup")
-    public void start (@ProcessVariable("customerId") long customerId){
+    public void start (@ProcessVariable("customerId") long customerId, @ProcessId String procId){
         System.out.println("start() "+ customerId);
     }
 

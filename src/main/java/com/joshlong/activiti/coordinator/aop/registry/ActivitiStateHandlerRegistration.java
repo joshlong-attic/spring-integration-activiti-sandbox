@@ -5,7 +5,9 @@ import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
@@ -19,23 +21,47 @@ import java.util.concurrent.ConcurrentSkipListSet;
  */
 public class ActivitiStateHandlerRegistration {
 
-    private Set<String> processVariablesExpected = new ConcurrentSkipListSet<String>();
+    private Map<Integer,String> processVariablesExpected = new ConcurrentHashMap<Integer,String>();
     private Method handlerMethod;
     private Object handler;
     private String stateName;
     private String beanName ;
+    private int processVariablesIndex = -1;
+    private int processIdIndex = -1;
     private String processName ;
 
-    public ActivitiStateHandlerRegistration(Set<String> processVariablesExpected, Method handlerMethod, Object handler, String stateName, String beanName, String processName) {
+    public ActivitiStateHandlerRegistration(Map<Integer, String> processVariablesExpected, Method handlerMethod, Object handler, String stateName, String beanName, int processVariablesIndex, int processIdIndex, String processName) {
         this.processVariablesExpected = processVariablesExpected;
         this.handlerMethod = handlerMethod;
         this.handler = handler;
         this.stateName = stateName;
         this.beanName = beanName;
+        this.processVariablesIndex = processVariablesIndex;
+        this.processIdIndex = processIdIndex;
         this.processName = processName;
     }
 
-    public Set<String> getProcessVariablesExpected() {
+    public int getProcessVariablesIndex() {
+
+        return processVariablesIndex;
+    }
+
+    public int getProcessIdIndex() {
+        return processIdIndex;
+    }
+
+    public boolean requiresProcessId(){
+        return this.processIdIndex > -1;
+    }
+    public boolean requiresProcessVariablesMap(){
+        return processVariablesIndex >-1;
+    }
+
+    public String getBeanName() {
+        return beanName;
+    }
+
+    public Map<Integer, String> getProcessVariablesExpected() {
         return processVariablesExpected;
     }
 
