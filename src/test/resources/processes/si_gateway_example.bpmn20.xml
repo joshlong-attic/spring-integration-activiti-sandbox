@@ -7,17 +7,18 @@
 			 expressionLanguage="http://www.w3.org/1999/XPath"
 			 targetNamespace="http://www.activiti.org/bpmn2.0">
 
-	<process id="sigatewayProcess">
+	<process id="customer-signup-process">
 
-		<startEvent id="theStart"/>
+		<startEvent id="start"/>
+			<sequenceFlow sourceRef="start"   targetRef="customer-signup" id="a"/>
 
-			<sequenceFlow id="flow1" sourceRef="theStart" targetRef="sigw"/>
+		<serviceTask id="customer-signup" activiti:class="#{gateway}"/>
+			<sequenceFlow sourceRef="customer-signup" targetRef="confirm-receipt" id="b"/>
 
-		<serviceTask id="sigw" name="Spring Integration Gateway" activiti:class="#{gateway}"/>
+        <serviceTask id="confirm-receipt" activiti:class="#{gateway}"/>
+            <sequenceFlow sourceRef="confirm-receipt"   targetRef="end" id="c"/>
 
-			<sequenceFlow id="flow2" sourceRef="sigw" targetRef="theEnd"/>
-
-		<endEvent id="theEnd"/>
+		<endEvent id="end"/>
 
 	</process>
 

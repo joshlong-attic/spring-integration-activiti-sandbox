@@ -19,6 +19,15 @@ public class Handler {
     // custom logic here
    return "failure"; 
   }
-} 
+}
+
+@Component
+public class Handler {
+  @ActivitiState ( "confirm-receipt")
+  public String myHandle ( @ProcessId String procId, @ProcessVariable("customerId") long customerId  ) throws Throwable {
+    // custom logic here
+   return "failure";
+  }
+}
 
  in that example the return value will be used to look up the next activiti state. 
