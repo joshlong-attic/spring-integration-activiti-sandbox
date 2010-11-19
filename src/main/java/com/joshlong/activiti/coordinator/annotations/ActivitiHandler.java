@@ -53,9 +53,5 @@ import java.lang.annotation.*;
 @Documented
 @Component
 public @interface ActivitiHandler {
-	/**
-	 * the name of the bean
-	 */
-	String value() default "";
-
+   String processName () default ""  ;
 }

@@ -10,10 +10,7 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.aop.support.ComposablePointcut;
 import org.springframework.aop.support.annotation.AnnotationClassFilter;
 import org.springframework.aop.support.annotation.AnnotationMethodMatcher;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.integration.aop.MethodAnnotationPublisherMetadataSource;
 import org.springframework.util.Assert;
 
 import java.lang.annotation.Annotation;
@@ -23,21 +20,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This class handles advising beans that have the AnnnotationState annotation
+ * This class handles advising beans that have the {@link com.joshlong.activiti.coordinator.annotations.ActivitiState} annotation
  *
  * @author Josh Long
  * @see org.springframework.aop.support.AbstractPointcutAdvisor
  * @since 1.0
  */
-public class ActivitiStateAnnotationAdvisor extends AbstractPointcutAdvisor implements BeanFactoryAware {
+public class ActivitiStateAnnotationAdvisor extends AbstractPointcutAdvisor /*implements BeanFactoryAware*/ {
+    private volatile Pointcut pointcut;
 
-    private final Set<Class<? extends Annotation>> stateAnnotationTypes;
-    private BeanFactory beanFactory;
-    private ActivitiStateDispatchingInterceptor interceptor;
+    private volatile Set<Class<? extends Annotation>> stateAnnotationTypes;
+
+    private volatile ActivitiStateDispatchingInterceptor interceptor;
 
     public ActivitiStateAnnotationAdvisor(Class<? extends Annotation>... publisherAnnotationTypes) {
         this.stateAnnotationTypes = new HashSet<Class<? extends Annotation>>(Arrays.asList(publisherAnnotationTypes));
-        MethodAnnotationPublisherMetadataSource methodAnnotationPublisherMetadataSource;
         this.interceptor = new ActivitiStateDispatchingInterceptor(/* metadata source */);
         this.pointcut = buildPointcut();
     }
@@ -51,16 +48,9 @@ public class ActivitiStateAnnotationAdvisor extends AbstractPointcutAdvisor impl
         return this.interceptor;
     }
 
-    public void setBeanFactory(BeanFactory beanFactory) {
-        this.beanFactory = beanFactory;
-    }
-
     public Pointcut getPointcut() {
         return pointcut;
     }
-
-
-    private volatile Pointcut pointcut;
 
     private Pointcut buildPointcut() {
         ComposablePointcut result = null;
@@ -97,7 +87,8 @@ class MetaAnnotationMethodMatcher extends AnnotationMethodMatcher {
         }
         // The method may be on an interface, so let's check on the target class as well.
         Method specificMethod = AopUtils.getMostSpecificMethod(method, targetClass);
-        return (specificMethod != method && (AnnotationUtils.getAnnotation(specificMethod, this.annotationType) != null));
+        return (specificMethod != method &&
+                (AnnotationUtils.getAnnotation(specificMethod, this.annotationType) != null));
     }
 }
 
@@ -116,7 +107,7 @@ class MetaAnnotationMatchingPointcut implements Pointcut {
 
     public MetaAnnotationMatchingPointcut(Class<? extends Annotation> classAnnotationType, Class<? extends Annotation> methodAnnotationType) {
 
-        Assert.isTrue( classAnnotationType !=null || methodAnnotationType != null ,
+        Assert.isTrue(classAnnotationType != null || methodAnnotationType != null,
                 "Either class annotation type or method annotation type needs to be specified (or both!)");
 
         if (classAnnotationType != null) {

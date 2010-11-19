@@ -11,36 +11,34 @@ import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.integration.support.channel.ChannelResolver;
 
 /**
- *
  * Simple {@link org.aopalliance.intercept.MethodInterceptor} that wraps a method execution
  * and forwards a message (the 'reply') to the {@link com.joshlong.activiti.coordinator.InboundActivitiCoordinatorDispatcher}
  * which in turn forwards it onto the well known destination which will ultimately connect it to
  * the {@link com.joshlong.activiti.coordinator.OutboundActivitiCoodinatorGateway} instance.
- *
+ * <p/>
  * This interceptor is what runs the method on your behalf on this - the client  - side.
- *
  *
  * @author Josh Long
  * @since 1.0
  */
-public class ActivitiStateDispatchingInterceptor  implements MethodInterceptor {
+public class ActivitiStateDispatchingInterceptor implements MethodInterceptor {
 
 
-	private final MessagingTemplate messagingTemplate = new MessagingTemplate();
+    private final MessagingTemplate messagingTemplate = new MessagingTemplate();
 
-	//private volatile PublisherMetadataSource metadataSource;
+    //private volatile PublisherMetadataSource metadataSource;
 
-	private final ExpressionParser parser = new SpelExpressionParser(new SpelParserConfiguration(true, true));
+    private final ExpressionParser parser = new SpelExpressionParser(new SpelParserConfiguration(true, true));
 
-	private volatile ChannelResolver channelResolver;
+    private volatile ChannelResolver channelResolver;
 
-	private final ParameterNameDiscoverer parameterNameDiscoverer =  new LocalVariableTableParameterNameDiscoverer();
+    private final ParameterNameDiscoverer parameterNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
 
 
-	public Object invoke(MethodInvocation invocation) throws Throwable {
-        System.out.println( "invoking the method before");
+    public Object invoke(MethodInvocation invocation) throws Throwable {
+        System.out.println("invoking the method before");
         Object res = invocation.proceed();
-        System.out.println( "invoking the method after");
-	    return res;
+        System.out.println("invoking the method after");
+        return res;
     }
 }

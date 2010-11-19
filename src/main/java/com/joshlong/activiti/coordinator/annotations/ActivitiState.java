@@ -27,9 +27,15 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented//@Component
 public @interface ActivitiState {
-	/**
-	 * the state that the component responds to 
-	 */
-	String value() default "";
+    /**
+     * the business process name
+     * @return
+     */
+	String processName() default "";
+    /**
+     * the state that the component responds to,
+     */
+    String stateName() default  "";
 
+    String value() default  "";
 }
