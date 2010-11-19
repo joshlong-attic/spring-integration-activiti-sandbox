@@ -8,13 +8,17 @@ package com.joshlong.activiti.coordinator;
  */
 public class CoordinatorConstants {
 
-    static final String PROC_NAME = "process_name";
+    static final String COORDINATOR_BASE = "activiti_coordinator";
 
-    static final String PROC_ID = "process_id";
+    static public String keyName(String i){ return COORDINATOR_BASE + ":" +i; }
 
-    static final String ACTIVITI_ID = "activiti_id";
+    static final String PROCESS_NAME = keyName( "process_name");
 
-    static final String EXECUTION_ID = "execution_id";
+    static final String PROC_ID = keyName("process_id");
+
+    static final String STATE_NAME = keyName("state_id");
+
+    static final String EXECUTION_ID = keyName("execution_id");
 
 
 }

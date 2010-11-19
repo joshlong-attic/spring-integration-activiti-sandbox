@@ -27,7 +27,6 @@ public class RegistrationMain {
         vars.put( "customerId", 23) ;
         processEngine.getRuntimeService().startProcessInstanceByKey( "customer-signup-process",vars);
 
-
         Thread.sleep(1000 * 30 );
 
 	}

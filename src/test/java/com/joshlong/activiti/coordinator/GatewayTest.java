@@ -19,6 +19,7 @@ import java.util.Map;
 @ContextConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 public class GatewayTest extends AbstractJUnit4SpringContextTests {
+
     @Autowired
     private ProcessEngine processEngine;
 

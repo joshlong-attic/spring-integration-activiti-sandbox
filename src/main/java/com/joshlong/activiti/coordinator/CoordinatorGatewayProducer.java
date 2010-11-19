@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 package com.joshlong.activiti.coordinator;
-import static com.joshlong.activiti.coordinator.CoordinatorConstants.* ;
+
 import org.activiti.engine.impl.repository.ProcessDefinitionEntity;
 import org.activiti.pvm.activity.ActivityExecution;
 import org.activiti.pvm.process.PvmProcessDefinition;
@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.joshlong.activiti.coordinator.CoordinatorConstants.*;
+
 
 /**
  * This component extends the {@link org.springframework.integration.activiti.gateway.AsyncActivityBehaviorMessagingGateway}.
@@ -32,7 +34,6 @@ import java.util.Map;
  * The idea is that we want a conventions-over-configuration based approach to dispatching state / execution to other
  * nodes that are using the client side counterpart to this class. This component simply transmits everything that a client will need to know to appropriately dispatch work
  * to consumers.
- *
  *
  * @author Josh Long
  * @see org.springframework.integration.activiti.gateway.AsyncActivityBehaviorMessagingGateway
@@ -43,9 +44,6 @@ public class CoordinatorGatewayProducer extends AsyncActivityBehaviorMessagingGa
 
     protected String ACTIVITI_COORDINATOR_BASE_HEADER = "activiti-coordinator".toUpperCase(Locale.ENGLISH);
 
-    protected String keyName(String i) {
-        return (ACTIVITI_COORDINATOR_BASE_HEADER + "_" + i).toUpperCase(Locale.ENGLISH);
-    }
 
     /**
      * we need the name of the process definition itself
@@ -55,7 +53,7 @@ public class CoordinatorGatewayProducer extends AsyncActivityBehaviorMessagingGa
      * @return the String name of the process definition (ie, 'customer-signup-process')
      */
     protected String discoverProcessName(
-        PvmProcessDefinition pvmProcessDefinition) {
+            PvmProcessDefinition pvmProcessDefinition) {
         String procName = null;
 
         if (pvmProcessDefinition instanceof ProcessDefinitionEntity) {
@@ -75,12 +73,12 @@ public class CoordinatorGatewayProducer extends AsyncActivityBehaviorMessagingGa
 
     @Override
     protected Map<String, Object> outboundMessageConfigurationHook(
-        ActivityExecution activityExecution) throws Exception {
+            ActivityExecution activityExecution) throws Exception {
         Map<String, Object> headers = new HashMap<String, Object>();
-        headers.put(keyName(EXECUTION_ID), activityExecution.getId());
-        headers.put(keyName(ACTIVITI_ID), activityExecution.getActivity().getId());
-        headers.put(keyName(PROC_ID), activityExecution.getActivity().getProcessDefinition().getId());
-        headers.put(keyName(PROC_NAME), discoverProcessName(activityExecution.getActivity().getProcessDefinition()));
+        headers.put((EXECUTION_ID), activityExecution.getId());
+        headers.put((STATE_NAME), activityExecution.getActivity().getId());
+        headers.put((PROC_ID), activityExecution.getActivity().getProcessDefinition().getId());
+        headers.put((PROCESS_NAME), discoverProcessName(activityExecution.getActivity().getProcessDefinition()));
         return headers;
     }
 }

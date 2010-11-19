@@ -1,5 +1,6 @@
 package com.joshlong.activiti.coordinator.registration1;
 
+import com.joshlong.activiti.coordinator.CoordinatorGatewayClient;
 import com.joshlong.activiti.coordinator.CoordinatorGatewayProducer;
 import com.joshlong.activiti.coordinator.aop.ActivitiStateAnnotationBeanPostProcessor;
 import com.joshlong.activiti.coordinator.registry.ActivitiStateHandlerRegistry;
@@ -31,7 +32,7 @@ import javax.sql.DataSource;
 public class RegistrationConfiguration {
 
     @Value("#{reply}")
-    private MessageChannel response;
+    private MessageChannel reply;
 
     @Value("#{request}")
     private MessageChannel request;
@@ -42,7 +43,7 @@ public class RegistrationConfiguration {
     @Bean
     public CoordinatorGatewayProducer gateway() {
         CoordinatorGatewayProducer coordinatorGatewayProducer = new CoordinatorGatewayProducer();
-        coordinatorGatewayProducer.setReplyChannel(this.response);
+        coordinatorGatewayProducer.setReplyChannel(this.reply);
         coordinatorGatewayProducer.setRequestChannel(this.request);
         coordinatorGatewayProducer.setProcessEngine(this.processEngine);
         coordinatorGatewayProducer.setForwardProcessVariablesAsMessageHeaders(true);
@@ -77,13 +78,20 @@ public class RegistrationConfiguration {
 
     @Bean
     public ActivitiStateHandlerRegistry registry(){
-        ActivitiStateHandlerRegistry  activitiStateHandlerRegistry = new ActivitiStateHandlerRegistry ();
+        ActivitiStateHandlerRegistry activitiStateHandlerRegistry = new ActivitiStateHandlerRegistry ();
         return activitiStateHandlerRegistry ;
     }
 
     @Bean
+    public CoordinatorGatewayClient coordinatorGatewayClient (){
+        CoordinatorGatewayClient client = new CoordinatorGatewayClient();
+        client.setRegistry( this.registry()) ;
+        return client;
+    }
+
+    @Bean
     public ActivitiStateAnnotationBeanPostProcessor activitiStateAnnotationBeanPostProcessor (){
-        ActivitiStateAnnotationBeanPostProcessor  activitiStateAnnotationBeanPostProcessor =
+        ActivitiStateAnnotationBeanPostProcessor activitiStateAnnotationBeanPostProcessor =
                 new ActivitiStateAnnotationBeanPostProcessor ();
         activitiStateAnnotationBeanPostProcessor.setRegistry(this.registry());
         return activitiStateAnnotationBeanPostProcessor;

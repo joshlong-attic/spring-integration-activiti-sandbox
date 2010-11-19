@@ -24,8 +24,8 @@ public class ActivitiStateHandlerRegistry {
     }
 
     public void registerActivitiStateHandler(ActivitiStateHandlerRegistration registration) {
-        String regKey = registrationKey( registration.getProcessName(), registration.getStateName());
-        this.registrations.put( regKey, registration);
+        String regKey = registrationKey(registration.getProcessName(), registration.getStateName());
+        this.registrations.put(regKey, registration);
     }
 
     /**
@@ -36,7 +36,7 @@ public class ActivitiStateHandlerRegistry {
      * @param stateName   the state name to look for (not optional)
      * @return all matching options
      */
-    public Collection<ActivitiStateHandlerRegistration> findRegistrationForProcessAndState(String processName, String stateName) {
+    public Collection<ActivitiStateHandlerRegistration> findRegistrationsForProcessAndState(String processName, String stateName) {
         Collection<ActivitiStateHandlerRegistration> registrationCollection = new ArrayList<ActivitiStateHandlerRegistration>();
         String regKey = registrationKey(processName, stateName);
         for (String k : this.registrations.keySet())
@@ -45,5 +45,20 @@ public class ActivitiStateHandlerRegistry {
         return registrationCollection;
     }
 
+    public ActivitiStateHandlerRegistration findRegistrationForProcessAndState(String pName, String stateName) {
+        ActivitiStateHandlerRegistration r = null;
+        String key = registrationKey(pName, stateName);
+        Collection<ActivitiStateHandlerRegistration> rs = this.findRegistrationsForProcessAndState(pName, stateName);
+        for (ActivitiStateHandlerRegistration sr : rs) {
+            String kName = registrationKey(sr.getProcessName(), sr.getStateName());
+            if (key.equalsIgnoreCase(kName)) {
+                r = sr;
+                break;
+            }
+        }
+        if (r == null && rs.size() > 0)
+            return rs.iterator().next();
+        else return null;
+    }
 
 }
