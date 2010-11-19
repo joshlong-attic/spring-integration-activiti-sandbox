@@ -20,6 +20,10 @@
     <context:component-scan base-package="com.joshlong.activiti.coordinator.registration1"/>
  
 
-    <bean class="com.joshlong.activiti.coordinator.aop.ActivitiStateAnnotationBeanPostProcessor"  />
+    <bean class="com.joshlong.activiti.coordinator.aop.registry.ActivitiStateHandlerRegistry" id="registry"/>
+    
+    <bean class="com.joshlong.activiti.coordinator.aop.ActivitiStateAnnotationBeanPostProcessor"  >
+        <property name="registry" ref="registry"/>
+    </bean>
 
 </beans>

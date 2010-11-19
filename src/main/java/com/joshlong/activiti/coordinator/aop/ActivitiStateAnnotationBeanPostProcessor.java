@@ -31,8 +31,7 @@ import java.util.Map;
  * @author Josh Long
  * @see org.springframework.integration.aop.PublisherAnnotationBeanPostProcessor
  */
-public class ActivitiStateAnnotationBeanPostProcessor extends ProxyConfig
-        implements BeanPostProcessor, BeanClassLoaderAware, BeanFactoryAware, InitializingBean, Ordered {
+public class ActivitiStateAnnotationBeanPostProcessor implements BeanPostProcessor, BeanClassLoaderAware, BeanFactoryAware, InitializingBean, Ordered {
 
     // registration
     private volatile ActivitiStateHandlerRegistry registry;
@@ -58,11 +57,6 @@ public class ActivitiStateAnnotationBeanPostProcessor extends ProxyConfig
     public void afterPropertiesSet() {
         Assert.notNull(this.beanClassLoader, "beanClassLoader must not be null");
         Assert.notNull(this.beanFactory, "beanFactory must not be null");
-
-        if (null == registry)
-            registry = new ActivitiStateHandlerRegistry();
-
-
     }
 
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
