@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="definitions"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xmlns:activiti="http://activiti.org/bpmn-extensions"
+			 typeLanguage="http://www.w3.org/2001/XMLSchema"
+			 expressionLanguage="http://www.w3.org/1999/XPath"
+			 targetNamespace="http://www.activiti.org/bpmn2.0">
+
+	<process id="customer-signup-process">
+
+		<startEvent id="start"/>
+			<sequenceFlow sourceRef="start"   targetRef="customer-signup" id="a"/>
+
+		<serviceTask id="customer-signup" activiti:class="#{gateway}"/>
+			<sequenceFlow sourceRef="customer-signup" targetRef="confirm-receipt" id="b"/>
+
+        <serviceTask id="confirm-receipt" activiti:class="#{gateway}"/>
+            <sequenceFlow sourceRef="confirm-receipt"   targetRef="end" id="c"/>
+
+		<endEvent id="end"/>
+
+	</process>
+
+</definitions>
