@@ -18,8 +18,8 @@ public class SerializablePayloadAndHeaderRetainingTransformer {
 
 	@Transformer
 	public Message<?> keepOnlySerializablObjects (Message<?> in) throws Throwable {
-		System.out.println("passing through " +
-				SerializablePayloadAndHeaderRetainingTransformer.class.getName());
+	//	System.out.println("passing through " +
+		//		SerializablePayloadAndHeaderRetainingTransformer.class.getName());
 
 		MessageHeaders headers = in.getHeaders();
 		Map<String, Object> serializableHeaders = new HashMap<String, Object>();

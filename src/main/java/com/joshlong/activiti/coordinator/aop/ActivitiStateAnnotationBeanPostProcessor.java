@@ -133,7 +133,7 @@ public class ActivitiStateAnnotationBeanPostProcessor implements BeanPostProcess
 						ActivitiStateHandlerRegistration registration = new ActivitiStateHandlerRegistration(vars,
 								method, bean, stateName, beanName, pvMapIndex,
 								procIdIndex, processName);
-						System.out.println(registration + "");
+//						System.out.println(registration + "");
 						registry.registerActivitiStateHandler(registration);
 					}
 				},

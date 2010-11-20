@@ -52,19 +52,12 @@ public class CoordinatorGatewayClient implements ApplicationContextAware {
 
 			String stateName = (String) headers.get(CoordinatorConstants.STATE_NAME);
 
-			ActivitiStateHandlerRegistration registration = registry.findRegistrationForProcessAndState(procName,
-					stateName);
+			ActivitiStateHandlerRegistration registration = registry.findRegistrationForProcessAndState( procName, stateName);
 
 			Object bean = applicationContext.getBean(registration.getBeanName());
 
-			System.out.println("---------------------");
-			System.out.println("handling " + procName + ":" + stateName);
-			System.out.println(registration.toString());
-
-			System.out.println("---------------------");
-
 			Method method = registration.getHandlerMethod();
-			int size = method.getParameterTypes().length;
+//			int size = method.getParameterTypes().length;
 			ArrayList<Object> argsList = new ArrayList<Object>();
 
 			// todo support proc var map
@@ -83,7 +76,7 @@ public class CoordinatorGatewayClient implements ApplicationContextAware {
 						headers.get(CoordinatorConstants.PROC_ID));
 			}
 
-			System.out.println(variables.toString());
+//			System.out.println(variables.toString());
 
 			List<Integer> indices = new ArrayList<Integer>(variables.keySet());
 			Collections.sort(indices);

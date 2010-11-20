@@ -43,7 +43,7 @@
 
     <int:channel id="replies"/>
 
-    <int:transformer input-channel="requests" ref="serializableHeaderRetainingTransformer" output-channel="serializable-friendly-request"/>
+    <int:transformer input-channel="requests" ref="serializablePayloadAndHeaderRetainingTransformer" output-channel="serializable-friendly-request"/>
 
     <jms:outbound-channel-adapter channel="serializable-friendly-request" connection-factory="cf" destination-name="activiti-requests"/>
 

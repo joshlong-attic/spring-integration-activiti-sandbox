@@ -43,7 +43,6 @@ public class ActivitiStateHandlerRegistry {
 		String regKey = registrationKey(registration.getProcessName(),
 				registration.getStateName());
 		this.registrations.put(regKey, registration);
-		System.out.println("just registered key " + regKey);
 	}
 
 	/**
@@ -57,12 +56,20 @@ public class ActivitiStateHandlerRegistry {
 	public Collection<ActivitiStateHandlerRegistration> findRegistrationsForProcessAndState(
 			String processName, String stateName) {
 		Collection<ActivitiStateHandlerRegistration> registrationCollection = new ArrayList<ActivitiStateHandlerRegistration>();
-		String regKey = registrationKey(processName, stateName);
+		String regKeyFull = registrationKey(processName, stateName);
+		String regKeyWithJustState = registrationKey(null, stateName);
 
 		for (String k : this.registrations.keySet())
-			if (k.contains(regKey)) {
+			if (k.contains(regKeyFull)) {
 				registrationCollection.add(this.registrations.get(k));
 			}
+
+		if (registrationCollection.size() == 0) {
+			for (String k : this.registrations.keySet())
+				if (k.contains(regKeyWithJustState)) {
+					registrationCollection.add(this.registrations.get(k));
+				}
+		}
 
 		return registrationCollection;
 	}
@@ -75,12 +82,17 @@ public class ActivitiStateHandlerRegistry {
 				stateName);
 
 		for (ActivitiStateHandlerRegistration sr : rs) {
-			String kName = registrationKey(sr.getProcessName(),
-					sr.getStateName());
-
+			String kName = registrationKey(sr.getProcessName(), sr.getStateName());
 			if (key.equalsIgnoreCase(kName)) {
 				r = sr;
+				break;
+			}
+		}
 
+		for (ActivitiStateHandlerRegistration sr : rs) {
+			String kName = registrationKey(null, sr.getStateName());
+			if (key.equalsIgnoreCase(kName)) {
+				r = sr;
 				break;
 			}
 		}

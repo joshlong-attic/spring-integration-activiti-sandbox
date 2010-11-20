@@ -14,7 +14,7 @@ public class SharedConfiguration {
 		ActiveMQConnectionFactoryFactoryBean activeMQConnectionFactoryFactoryBean =
 				new ActiveMQConnectionFactoryFactoryBean();
 		activeMQConnectionFactoryFactoryBean.setTcpHostAndPort( this.activeMqUrl );
-		System.out.println( getClass() + " connectionFactory started") ;
+//		System.out.println( getClass() + " connectionFactory started") ;
 		return activeMQConnectionFactoryFactoryBean ;
 	}
 

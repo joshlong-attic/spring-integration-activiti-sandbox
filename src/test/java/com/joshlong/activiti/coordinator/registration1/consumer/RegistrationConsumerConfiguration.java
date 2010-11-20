@@ -28,15 +28,6 @@ import javax.annotation.PostConstruct;
 
 @Configuration
 public class RegistrationConsumerConfiguration  extends SharedConfiguration {
-
-
-
-	@PostConstruct
-	public void start() {
-		System.out.println( "starting "+ RegistrationConsumerConfiguration.class.getName());
-	}
-
-
 	@Bean
 	public ActivitiStateHandlerRegistry registry() {
 		return new ActivitiStateHandlerRegistry();

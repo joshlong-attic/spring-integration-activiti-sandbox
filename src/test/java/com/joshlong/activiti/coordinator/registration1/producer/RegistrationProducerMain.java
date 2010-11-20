@@ -16,10 +16,20 @@
 package com.joshlong.activiti.coordinator.registration1.producer;
 
 import org.activiti.engine.ProcessEngine;
+
+import org.apache.commons.lang.StringUtils;
+
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * simple example demonstratong the deployment of the activiti components
@@ -28,19 +38,23 @@ import java.util.Map;
  * @since 1.0
  */
 public class RegistrationProducerMain {
+    public static void main(String[] args) throws Throwable {
 
-	public static void main(String[] args) throws Throwable {
+				ApplicationContext cax = new ClassPathXmlApplicationContext( "producer.xml");
 
-		ClassPathXmlApplicationContext cax = new ClassPathXmlApplicationContext("producer.xml");
+        ProcessEngine processEngine = cax.getBean(ProcessEngine.class);
 
-		ProcessEngine processEngine = cax.getBean(ProcessEngine.class);
+        String line ;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-		Map<String, Object> vars = new HashMap<String, Object>();
-		vars.put("customerId", 23);
-		processEngine.getRuntimeService().startProcessInstanceByKey("customer-fullfillment-process", vars);
+        while (true) {
+            System.out.println("which customer would you like to start a fulfillment process for? Enter it, then hit <Enter>:");
+            line = reader.readLine();
 
-		Thread.sleep(1000 * 30);
+            Integer customerId = Integer.parseInt(StringUtils.defaultString(line).trim());
+            Map<String, Object> vars =   Collections.singletonMap(  "customerId", (Object) customerId);
+            processEngine.getRuntimeService().startProcessInstanceByKey( "customer-fullfillment-process", vars);
+        }
 
-	}
+    }
 }
-
