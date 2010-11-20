@@ -64,11 +64,15 @@ public class RegistrationProducerMain {
             processEngine.getRuntimeService() .startProcessInstanceByKey("customer-fullfillment-process", vars);
         }
     }
+		public static void doDefault () throws Throwable {
+			while(true) Thread.sleep(1000 * 10);
+		}
 
     public static void main(String[] args) throws Throwable {
 
 			ApplicationContext cax = new ClassPathXmlApplicationContext( "producer.xml");
 
-			doContinuousIterationUpUntil( cax, 100);
+		//	doDefault();
+ 		doContinuousIterationUpUntil( cax, 100);
     }
 }

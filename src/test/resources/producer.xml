@@ -47,7 +47,7 @@
 
     <jms:outbound-channel-adapter channel="serializable-friendly-request" connection-factory="cf" destination-name="activiti-requests"/>
 
-    <jms:inbound-channel-adapter channel="replies" connection-factory="cf" destination-name="activiti-replies"/>
+    <jms:message-driven-channel-adapter channel="replies" concurrent-consumers="5" connection-factory="cf" destination-name="activiti-replies"/>
 
 
 

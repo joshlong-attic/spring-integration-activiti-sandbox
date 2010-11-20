@@ -42,8 +42,8 @@
 
     <context:component-scan base-package="com.joshlong.activiti.coordinator.registration1.consumer"/>
 
-    <int:poller default="true" max-messages-per-poll="20">
-        <int:interval-trigger interval="1000"/>
+   <int:poller default="true" max-messages-per-poll="10">
+      <int:interval-trigger interval="1000"/>
     </int:poller>
 
     <int:channel id="request" >
@@ -52,7 +52,7 @@
 
     <int:channel id="replies"/>
 
-    <jms:inbound-channel-adapter channel="request" connection-factory="cf" destination-name="activiti-requests"/>
+    <jms:message-driven-channel-adapter concurrent-consumers="3" channel="request" connection-factory="cf" destination-name="activiti-requests"/>
     <int:service-activator input-channel="request" ref="coordinatorGatewayClient" method="processMessage" output-channel="replies"/>
     <jms:outbound-channel-adapter  channel="replies" connection-factory="cf" destination-name="activiti-replies"/>
 
