@@ -19,13 +19,13 @@ public class RegistrationMain {
 	public static void main (String[] args) throws Throwable {
 
 		ClassPathXmlApplicationContext cax = new ClassPathXmlApplicationContext(
-                "com/joshlong/activiti/coordinator/registration1.xml") ;
+				"registration1.xml") ;
 
         ProcessEngine processEngine = cax.getBean(ProcessEngine.class);
 
         Map<String, Object> vars = new HashMap<String, Object>() ;
         vars.put( "customerId", 23) ;
-        processEngine.getRuntimeService().startProcessInstanceByKey( "customer-signup-process",vars);
+        processEngine.getRuntimeService().startProcessInstanceByKey( "customer-fullfillment-process",vars);
 
         Thread.sleep(1000 * 30 );
 

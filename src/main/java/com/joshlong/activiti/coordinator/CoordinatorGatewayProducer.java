@@ -42,43 +42,44 @@ import static com.joshlong.activiti.coordinator.CoordinatorConstants.*;
 public class CoordinatorGatewayProducer extends AsyncActivityBehaviorMessagingGateway {
 
 
-    protected String ACTIVITI_COORDINATOR_BASE_HEADER = "activiti-coordinator".toUpperCase(Locale.ENGLISH);
+	protected String ACTIVITI_COORDINATOR_BASE_HEADER = "activiti-coordinator".toUpperCase(Locale.ENGLISH);
 
 
-    /**
-     * we need the name of the process definition itself
-     *
-     * @param pvmProcessDefinition this information exists in the <code>&lt;process.. &gt;</code> element in the BPMN
-     *                             process definition.
-     * @return the String name of the process definition (ie, 'customer-signup-process')
-     */
-    protected String discoverProcessName(
-            PvmProcessDefinition pvmProcessDefinition) {
-        String procName = null;
+	/**
+	 * we need the name of the process definition itself
+	 *
+	 * @param pvmProcessDefinition this information exists in the <code>&lt;process.. &gt;</code> element in the BPMN
+	 *                             process definition.
+	 * @return the String name of the process definition (ie, 'customer-signup-process')
+	 */
+	protected String discoverProcessName(
+			PvmProcessDefinition pvmProcessDefinition) {
+		String procName = null;
 
-        if (pvmProcessDefinition instanceof ProcessDefinitionEntity) {
-            ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) pvmProcessDefinition;
-            procName = processDefinitionEntity.getKey();
-        } else {
-            String id = pvmProcessDefinition.getId();
-            if (StringUtils.hasText(id)) {
-                int liOfColon = id.lastIndexOf(":");
-                if (liOfColon > -1) {
-                    procName = id.substring(0, liOfColon);
-                }
-            }
-        }
-        return procName;
-    }
+		if (pvmProcessDefinition instanceof ProcessDefinitionEntity) {
+			ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) pvmProcessDefinition;
+			procName = processDefinitionEntity.getKey();
+		} else {
+			String id = pvmProcessDefinition.getId();
+			if (StringUtils.hasText(id)) {
+				int liOfColon = id.lastIndexOf(":");
+				if (liOfColon > -1) {
+					procName = id.substring(0, liOfColon);
+				}
+			}
+		}
+		return procName;
+	}
 
-    @Override
-    protected Map<String, Object> outboundMessageConfigurationHook(
-            ActivityExecution activityExecution) throws Exception {
-        Map<String, Object> headers = new HashMap<String, Object>();
-        headers.put((EXECUTION_ID), activityExecution.getId());
-        headers.put((STATE_NAME), activityExecution.getActivity().getId());
-        headers.put((PROC_ID), activityExecution.getActivity().getProcessDefinition().getId());
-        headers.put((PROCESS_NAME), discoverProcessName(activityExecution.getActivity().getProcessDefinition()));
-        return headers;
-    }
+	@Override
+	protected Map<String, Object> outboundMessageConfigurationHook(
+			ActivityExecution activityExecution) throws Exception {
+		Map<String, Object> headers = new HashMap<String, Object>();
+		headers.put((EXECUTION_ID), activityExecution.getId());
+		headers.put((STATE_NAME), activityExecution.getActivity().getId());
+		headers.put((PROC_ID), activityExecution.getActivity().getProcessDefinition().getId());
+		headers.put((PROCESS_NAME), discoverProcessName(activityExecution.getActivity().getProcessDefinition()));
+
+		return headers;
+	}
 }

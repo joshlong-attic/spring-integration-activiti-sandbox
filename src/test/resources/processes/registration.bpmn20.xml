@@ -10,10 +10,10 @@
 	<process id="customer-fullfillment-process">
 
 		<startEvent id="start"/>
-			<sequenceFlow sourceRef="start"   targetRef="customer-signup" id="a"/>
+			<sequenceFlow sourceRef="start"   targetRef="start-signup" id="a"/>
 
-		<serviceTask id="customer-signup" activiti:class="#{gateway}"/>
-			<sequenceFlow sourceRef="customer-signup" targetRef="confirm-receipt" id="b"/>
+		<serviceTask id="start-signup" activiti:class="#{gateway}"/>
+			<sequenceFlow sourceRef="start-signup" targetRef="confirm-receipt" id="b"/>
 
         <serviceTask id="confirm-receipt" activiti:class="#{gateway}"/>
             <sequenceFlow sourceRef="confirm-receipt"   targetRef="end" id="c"/>

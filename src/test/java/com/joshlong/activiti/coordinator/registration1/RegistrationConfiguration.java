@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.context.annotation.Bean;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.integration.MessageChannel;
@@ -28,7 +29,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 
-@Component
+@Configuration 
 public class RegistrationConfiguration {
 
     @Value("#{reply}")
@@ -54,7 +55,7 @@ public class RegistrationConfiguration {
     @Bean
     public DataSource activitiDataSource(){
         return new SimpleDriverDataSource(
-            new org.h2.Driver() ,"jdbc:h2:tcp://localhost/~/activiti_example1","sa","");
+            new org.h2.Driver() ,"jdbc:h2:tcp://localhost/~/activiti_example3","sa","");
     }
     @Bean
     public DataSource dataSource() {
@@ -71,7 +72,7 @@ public class RegistrationConfiguration {
         ProcessEngineFactoryBean pe = new ProcessEngineFactoryBean();
         pe.setDataSource(this.dataSource());
         pe.setTransactionManager(this.platformTransactionManager());
-        pe.setDbSchemaStrategy(DbSchemaStrategy.CHECK_VERSION );
+        pe.setDbSchemaStrategy(DbSchemaStrategy.CHECK_VERSION);
         pe.setDeploymentResources( new Resource[]{new ClassPathResource("processes/registration.bpmn20.xml")} );
         return pe;
     }

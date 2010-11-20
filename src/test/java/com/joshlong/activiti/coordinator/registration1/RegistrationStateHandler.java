@@ -12,16 +12,16 @@ public class RegistrationStateHandler {
 
 	@PostConstruct
 	public void setup () throws Throwable{
-		System.out.println( "start()");
+		System.out.println( "setup()");
 	}
 
-    @ActivitiState( processName = "customer-signup-process", stateName = "start-signup")
+    @ActivitiState( stateName = "start-signup")
     public void start (@ProcessVariable("customerId") long customerId, @ProcessId String procId){
-        System.out.println("start() "+ customerId);
+        System.out.println("start-signup() customerId:"+ customerId + " processId: " + procId);
     }
 
 	@ActivitiState( "confirm-receipt")
 	public void confirm(){
-		System.out.println( "confirm()") ;
+		System.out.println( "confirm-receipt()") ;
 	}
 }

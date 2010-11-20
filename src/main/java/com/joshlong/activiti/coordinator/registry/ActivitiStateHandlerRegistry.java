@@ -15,50 +15,52 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ActivitiStateHandlerRegistry {
 
-    private volatile Map<String, ActivitiStateHandlerRegistration> registrations =
-            new ConcurrentHashMap<String, ActivitiStateHandlerRegistration>();
+	private volatile Map<String, ActivitiStateHandlerRegistration> registrations =
+			new ConcurrentHashMap<String, ActivitiStateHandlerRegistration>();
 
-    protected String registrationKey(String stateName, String processName) {
-        return (org.apache.commons.lang.StringUtils.defaultString(processName) + ":" +
-                org.apache.commons.lang.StringUtils.defaultString(stateName)).toLowerCase();
-    }
+	protected String registrationKey(String stateName, String processName) {
+		return (org.apache.commons.lang.StringUtils.defaultString(processName) + ":" +
+				org.apache.commons.lang.StringUtils.defaultString(stateName)).toLowerCase();
+	}
 
-    public void registerActivitiStateHandler(ActivitiStateHandlerRegistration registration) {
-        String regKey = registrationKey(registration.getProcessName(), registration.getStateName());
-        this.registrations.put(regKey, registration);
-    }
+	public void registerActivitiStateHandler(ActivitiStateHandlerRegistration registration) {
+		String regKey = registrationKey(registration.getProcessName(), registration.getStateName());
+		this.registrations.put(regKey, registration);
+		System.out.println ( "just registered key " + regKey);
+	}
 
-    /**
-     * this is responsible for looking up components in the registry and returning the appropriate handler based
-     * on specificity of the {@link ActivitiStateHandlerRegistration}
-     *
-     * @param processName the process name to look for (optional)
-     * @param stateName   the state name to look for (not optional)
-     * @return all matching options
-     */
-    public Collection<ActivitiStateHandlerRegistration> findRegistrationsForProcessAndState(String processName, String stateName) {
-        Collection<ActivitiStateHandlerRegistration> registrationCollection = new ArrayList<ActivitiStateHandlerRegistration>();
-        String regKey = registrationKey(processName, stateName);
-        for (String k : this.registrations.keySet())
-            if (k.contains(regKey))
-                registrationCollection.add(this.registrations.get(k));
-        return registrationCollection;
-    }
+	/**
+	 * this is responsible for looking up components in the registry and returning the appropriate handler based
+	 * on specificity of the {@link ActivitiStateHandlerRegistration}
+	 *
+	 * @param processName the process name to look for (optional)
+	 * @param stateName	 the state name to look for (not optional)
+	 * @return all matching options
+	 */
+	public Collection<ActivitiStateHandlerRegistration> findRegistrationsForProcessAndState(String processName, String stateName) {
+		Collection<ActivitiStateHandlerRegistration> registrationCollection = new ArrayList<ActivitiStateHandlerRegistration>();
+		String regKey = registrationKey(processName, stateName);
+		for (String k : this.registrations.keySet())
+			if (k.contains(regKey))
+				registrationCollection.add(this.registrations.get(k));
+		return registrationCollection;
+	}
 
-    public ActivitiStateHandlerRegistration findRegistrationForProcessAndState(String pName, String stateName) {
-        ActivitiStateHandlerRegistration r = null;
-        String key = registrationKey(pName, stateName);
-        Collection<ActivitiStateHandlerRegistration> rs = this.findRegistrationsForProcessAndState(pName, stateName);
-        for (ActivitiStateHandlerRegistration sr : rs) {
-            String kName = registrationKey(sr.getProcessName(), sr.getStateName());
-            if (key.equalsIgnoreCase(kName)) {
-                r = sr;
-                break;
-            }
-        }
-        if (r == null && rs.size() > 0)
-            return rs.iterator().next();
-        else return null;
-    }
+	public ActivitiStateHandlerRegistration findRegistrationForProcessAndState(String pName, String stateName) {
+		ActivitiStateHandlerRegistration r = null;
+		String key = registrationKey(pName, stateName);
+		Collection<ActivitiStateHandlerRegistration> rs = this.findRegistrationsForProcessAndState(pName, stateName);
+		for (ActivitiStateHandlerRegistration sr : rs) {
+			String kName = registrationKey(sr.getProcessName(), sr.getStateName());
+			if (key.equalsIgnoreCase(kName)) {
+				r = sr;
+				break;
+			}
+		}
+		if (r == null && rs.size() > 0)
+			r = rs.iterator().next();
+
+		return r;
+	}
 
 }
