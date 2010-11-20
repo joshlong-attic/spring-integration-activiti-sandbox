@@ -18,6 +18,7 @@ package com.joshlong.activiti.coordinator.registration1.producer;
 import com.joshlong.activiti.coordinator.CoordinatorGatewayClient;
 import com.joshlong.activiti.coordinator.CoordinatorGatewayProducer;
 import com.joshlong.activiti.coordinator.aop.ActivitiStateAnnotationBeanPostProcessor;
+import com.joshlong.activiti.coordinator.registration1.SharedConfiguration;
 import com.joshlong.activiti.coordinator.registry.ActivitiStateHandlerRegistry;
 import org.activiti.engine.DbSchemaStrategy;
 import org.activiti.engine.ProcessEngine;
@@ -37,14 +38,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 
-@Configuration @SuppressWarnings("unused")
-public class RegistrationProducerConfiguration {
+@Configuration
+public class RegistrationProducerConfiguration extends SharedConfiguration {
 
-    @Value("#{reply}")
-    private MessageChannel reply;
+    @Value("#{replies}")
+    private MessageChannel replies;
 
-    @Value("#{request}")
-    private MessageChannel request;
+    @Value("#{requests}")
+    private MessageChannel requests;
 
     @Autowired
     private ProcessEngine processEngine;
@@ -52,8 +53,8 @@ public class RegistrationProducerConfiguration {
     @Bean
     public CoordinatorGatewayProducer gateway() {
         CoordinatorGatewayProducer coordinatorGatewayProducer = new CoordinatorGatewayProducer();
-        coordinatorGatewayProducer.setReplyChannel(this.reply);
-        coordinatorGatewayProducer.setRequestChannel(this.request);
+        coordinatorGatewayProducer.setReplyChannel(this.replies);
+        coordinatorGatewayProducer.setRequestChannel(this.requests);
         coordinatorGatewayProducer.setProcessEngine(this.processEngine);
         coordinatorGatewayProducer.setForwardProcessVariablesAsMessageHeaders(true);
         coordinatorGatewayProducer.setUpdateProcessVariablesFromReplyMessageHeaders(true);
@@ -84,24 +85,4 @@ public class RegistrationProducerConfiguration {
         pe.setDeploymentResources( new Resource[]{new ClassPathResource("processes/registration.bpmn20.xml")} );
         return pe;
     }
-/*
-    @Bean
-    public ActivitiStateHandlerRegistry registry(){
-			return new ActivitiStateHandlerRegistry ();
-    }
-
-    @Bean
-    public CoordinatorGatewayClient coordinatorGatewayClient (){
-        CoordinatorGatewayClient client = new CoordinatorGatewayClient();
-        client.setRegistry( this.registry()) ;
-        return client;
-    }
-
-    @Bean  
-    public ActivitiStateAnnotationBeanPostProcessor activitiStateAnnotationBeanPostProcessor (){
-        ActivitiStateAnnotationBeanPostProcessor activitiStateAnnotationBeanPostProcessor =
-                new ActivitiStateAnnotationBeanPostProcessor ();
-        activitiStateAnnotationBeanPostProcessor.setRegistry(this.registry());
-        return activitiStateAnnotationBeanPostProcessor;
-    }*/
 }

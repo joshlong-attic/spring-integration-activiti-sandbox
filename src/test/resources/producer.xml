@@ -27,19 +27,28 @@
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd">
 
 
-    <context:component-scan base-package="com.joshlong.activiti.coordinator.registration1"/>
+    <context:component-scan base-package="com.joshlong.activiti.coordinator.registration1.producer"/>
 
     <int:poller default="true">
         <int:interval-trigger interval="1000"/>
     </int:poller>
 
-    <int:channel id="request">
+    <int:channel id="requests">
         <int:queue capacity="10"/>
     </int:channel>
 
-    <jms:outbound-gateway request-channel="request" reply-channel="reply"/>
+    <int:channel id="serializable-friendly-request">
+        <int:queue capacity="10"/>
+    </int:channel>
 
-    <int:channel id="reply"/>
+    <int:channel id="replies"/>
+
+    <int:transformer input-channel="requests" ref="serializableHeaderRetainingTransformer" output-channel="serializable-friendly-request"/>
+
+    <jms:outbound-channel-adapter channel="serializable-friendly-request" connection-factory="cf" destination-name="activiti-requests"/>
+
+    <jms:inbound-channel-adapter channel="replies" connection-factory="cf" destination-name="activiti-replies"/>
+
 
 
 </beans>
