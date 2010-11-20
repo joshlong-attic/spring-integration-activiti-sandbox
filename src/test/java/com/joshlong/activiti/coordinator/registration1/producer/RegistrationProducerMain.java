@@ -72,7 +72,7 @@ public class RegistrationProducerMain {
 
 			ApplicationContext cax = new ClassPathXmlApplicationContext( "producer.xml");
 
-		//	doDefault();
- 		doContinuousIterationUpUntil( cax, 100);
+		 //	doDefault();
+ 		 	doContinuousIterationUpUntil( cax, 50);
     }
 }
