@@ -16,18 +16,13 @@
 package com.joshlong.activiti.coordinator.registration1.producer;
 
 import org.activiti.engine.ProcessEngine;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Reader;
-
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -38,41 +33,55 @@ import java.util.Map;
  * @since 1.0
  */
 public class RegistrationProducerMain {
-		static void doContinuousIterationUpUntil( ApplicationContext ctx, int counter) throws Throwable {
-			ProcessEngine processEngine = ctx.getBean( ProcessEngine.class);
-			for(int customerId = 0; customerId < counter; customerId++){
-				Map<String, Object> vars = Collections.singletonMap("customerId", (Object) customerId);
-				processEngine.getRuntimeService() .startProcessInstanceByKey("customer-fullfillment-process", vars);
-			}
-			while(true)
-				Thread.sleep(10000);
+	/**
+	 * continues generating new processes until it reaches a certain count
+	 */
+	static void doContinuousIterationUpUntil(ApplicationContext ctx, int counter) throws Throwable {
+		ProcessEngine processEngine = ctx.getBean(ProcessEngine.class);
+		for (int customerId = 0; customerId < counter; customerId++) {
+			Map<String, Object> vars = Collections.singletonMap("customerId", (Object) customerId);
+			processEngine.getRuntimeService().startProcessInstanceByKey("customer-fullfillment-process", vars);
 		}
+		while (true)
+			Thread.sleep(10000);
+	}
 
-    static void doReadLine(ApplicationContext ctx) throws Throwable {
-        ProcessEngine processEngine = ctx.getBean(ProcessEngine.class);
+	/**
+	 * generates new processes in response to a read-line
+	 * @param ctx
+	 * @throws Throwable
+	 */
+	static void doReadLine(ApplicationContext ctx) throws Throwable {
+		ProcessEngine processEngine = ctx.getBean(ProcessEngine.class);
 
-        String line;
-        BufferedReader reader = new BufferedReader(
-						new InputStreamReader( System.in));
+		String line;
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(System.in));
 
-        while (true) {
-            System.out.println( "which customer would you like to start a fulfillment " +
-																"process for? Enter it, then hit <Enter>:");
-            line = reader.readLine();
-            Integer customerId = Integer.parseInt( StringUtils.defaultString( line).trim());
-            Map<String, Object> vars = Collections.singletonMap("customerId", (Object) customerId);
-            processEngine.getRuntimeService() .startProcessInstanceByKey("customer-fullfillment-process", vars);
-        }
-    }
-		public static void doDefault () throws Throwable {
-			while(true) Thread.sleep(1000 * 10);
+		while (true) {
+			System.out.println("which customer would you like to start a fulfillment " +
+					"process for? Enter it, then hit <Enter>:");
+			line = reader.readLine();
+			Integer customerId = Integer.parseInt(StringUtils.defaultString(line).trim());
+			Map<String, Object> vars = Collections.singletonMap("customerId", (Object) customerId);
+			processEngine.getRuntimeService().startProcessInstanceByKey("customer-fullfillment-process", vars);
 		}
+	}
 
-    public static void main(String[] args) throws Throwable {
+	/**
+	 * doesn't generate new processes. Simply starts up the producer machinery
+	 * to propagate state when incoming replies come in
+	 * @throws Throwable
+	 */
+	public static void doDefault() throws Throwable {
+		while (true) Thread.sleep(1000 * 10);
+	}
 
-			ApplicationContext cax = new ClassPathXmlApplicationContext( "producer.xml");
+	public static void main(String[] args) throws Throwable {
 
-		 //	doDefault();
- 		 	doContinuousIterationUpUntil( cax, 50);
-    }
+		ApplicationContext cax = new ClassPathXmlApplicationContext("producer.xml");
+
+		//	doDefault();
+		doContinuousIterationUpUntil(cax, 50);
+	}
 }
