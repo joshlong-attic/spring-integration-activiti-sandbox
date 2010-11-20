@@ -43,8 +43,7 @@ public class CoordinatorGatewayClient implements ApplicationContextAware {
 		this.registry = registry;
 	}
 
-	public Message<?> processMessage(Message<?> message)
-			throws MessagingException {
+	public Message<?> processMessage(Message<?> message) throws MessagingException {
 		try {
 			MessageHeaders headers = message.getHeaders();
 
@@ -60,9 +59,6 @@ public class CoordinatorGatewayClient implements ApplicationContextAware {
 //			int size = method.getParameterTypes().length;
 			ArrayList<Object> argsList = new ArrayList<Object>();
 
-			// todo support proc var map
-			//if(registration.requiresProcessVariablesMap())
-			//				argsList.add( registration.getProcessVariablesIndex(),  );
 			Map<Integer, String> processVariablesMap = registration.getProcessVariablesExpected();
 
 			// already has which indexes get which process variables
@@ -94,7 +90,9 @@ public class CoordinatorGatewayClient implements ApplicationContextAware {
 					.copyHeaders(message.getHeaders());
 
 			if (result instanceof Map) {
-				/// todo on the return trip we can update process variables so\
+			  // then we update the BPM
+				// by including them in the reply message
+				builder.copyHeadersIfAbsent( (Map)result);
 			}
 
 			return builder.build();

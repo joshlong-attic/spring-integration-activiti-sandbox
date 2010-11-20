@@ -38,23 +38,37 @@ import java.util.Map;
  * @since 1.0
  */
 public class RegistrationProducerMain {
-    public static void main(String[] args) throws Throwable {
+		static void doContinuousIterationUpUntil( ApplicationContext ctx, int counter) throws Throwable {
+			ProcessEngine processEngine = ctx.getBean( ProcessEngine.class);
+			for(int customerId = 0; customerId < counter; customerId++){
+				Map<String, Object> vars = Collections.singletonMap("customerId", (Object) customerId);
+				processEngine.getRuntimeService() .startProcessInstanceByKey("customer-fullfillment-process", vars);
+			}
+			while(true)
+				Thread.sleep(10000);
+		}
 
-				ApplicationContext cax = new ClassPathXmlApplicationContext( "producer.xml");
+    static void doReadLine(ApplicationContext ctx) throws Throwable {
+        ProcessEngine processEngine = ctx.getBean(ProcessEngine.class);
 
-        ProcessEngine processEngine = cax.getBean(ProcessEngine.class);
-
-        String line ;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String line;
+        BufferedReader reader = new BufferedReader(
+						new InputStreamReader( System.in));
 
         while (true) {
-            System.out.println("which customer would you like to start a fulfillment process for? Enter it, then hit <Enter>:");
+            System.out.println( "which customer would you like to start a fulfillment " +
+																"process for? Enter it, then hit <Enter>:");
             line = reader.readLine();
-
-            Integer customerId = Integer.parseInt(StringUtils.defaultString(line).trim());
-            Map<String, Object> vars =   Collections.singletonMap(  "customerId", (Object) customerId);
-            processEngine.getRuntimeService().startProcessInstanceByKey( "customer-fullfillment-process", vars);
+            Integer customerId = Integer.parseInt( StringUtils.defaultString( line).trim());
+            Map<String, Object> vars = Collections.singletonMap("customerId", (Object) customerId);
+            processEngine.getRuntimeService() .startProcessInstanceByKey("customer-fullfillment-process", vars);
         }
+    }
 
+    public static void main(String[] args) throws Throwable {
+
+			ApplicationContext cax = new ClassPathXmlApplicationContext( "producer.xml");
+
+			doContinuousIterationUpUntil( cax, 100);
     }
 }

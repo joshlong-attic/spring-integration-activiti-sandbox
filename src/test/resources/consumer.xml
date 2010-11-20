@@ -42,12 +42,12 @@
 
     <context:component-scan base-package="com.joshlong.activiti.coordinator.registration1.consumer"/>
 
-    <int:poller default="true">
+    <int:poller default="true" max-messages-per-poll="20">
         <int:interval-trigger interval="1000"/>
     </int:poller>
 
-    <int:channel id="request">
-        <int:queue capacity="10"/>
+    <int:channel id="request" >
+        <int:queue capacity="100"/>
     </int:channel>
 
     <int:channel id="replies"/>
