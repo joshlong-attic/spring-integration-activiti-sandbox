@@ -22,10 +22,9 @@ import java.lang.annotation.*;
  *
  * @author Josh Long
  * @since 1.0
- *
  */
-
-@Target({ElementType.PARAMETER })
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ProcessVariables {}
+public @interface ProcessVariables {
+}

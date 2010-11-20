@@ -22,11 +22,9 @@ import org.springframework.integration.activiti.gateway.AsyncActivityBehaviorMes
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import static com.joshlong.activiti.coordinator.CoordinatorConstants.*;
-
 
 /**
  * This component extends the {@link org.springframework.integration.activiti.gateway.AsyncActivityBehaviorMessagingGateway}.
@@ -42,9 +40,6 @@ import static com.joshlong.activiti.coordinator.CoordinatorConstants.*;
 public class CoordinatorGatewayProducer extends AsyncActivityBehaviorMessagingGateway {
 
 
-	protected String ACTIVITI_COORDINATOR_BASE_HEADER = "activiti-coordinator".toUpperCase(Locale.ENGLISH);
-
-
 	/**
 	 * we need the name of the process definition itself
 	 *
@@ -52,8 +47,7 @@ public class CoordinatorGatewayProducer extends AsyncActivityBehaviorMessagingGa
 	 *                             process definition.
 	 * @return the String name of the process definition (ie, 'customer-signup-process')
 	 */
-	protected String discoverProcessName(
-			PvmProcessDefinition pvmProcessDefinition) {
+	protected String discoverProcessName( PvmProcessDefinition pvmProcessDefinition) {
 		String procName = null;
 
 		if (pvmProcessDefinition instanceof ProcessDefinitionEntity) {
@@ -72,12 +66,11 @@ public class CoordinatorGatewayProducer extends AsyncActivityBehaviorMessagingGa
 	}
 
 	@Override
-	protected Map<String, Object> outboundMessageConfigurationHook(
-			ActivityExecution activityExecution) throws Exception {
+	protected Map<String, Object> outboundMessageConfigurationHook( ActivityExecution activityExecution ) throws Exception {
 		Map<String, Object> headers = new HashMap<String, Object>();
 		headers.put((EXECUTION_ID), activityExecution.getId());
 		headers.put((STATE_NAME), activityExecution.getActivity().getId());
-		headers.put((PROC_ID), activityExecution.getActivity().getProcessDefinition().getId());
+		headers.put((PROC_ID),activityExecution.getActivity().getProcessDefinition().getId());
 		headers.put((PROCESS_NAME), discoverProcessName(activityExecution.getActivity().getProcessDefinition()));
 
 		return headers;

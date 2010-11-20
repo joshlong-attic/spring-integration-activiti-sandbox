@@ -20,17 +20,16 @@ import org.springframework.stereotype.Component;
 import java.lang.annotation.*;
 
 /**
- *
  * Indicates that the given bean is an Activiti handler. An activiti handler is a bean
  * that is so annotated to respond to events ("states") in an Activiti BPM process.
- *
+ * <p/>
  * For example, suppose we have registered a BPMN process that has
  * the following declaration:
- *
+ * <p/>
  * <code>
- *   &lt;service-task activiti:expression = "myBean" id = "confirm-receipt" /&gt;
+ * &lt;service-task activiti:expression = "myBean" id = "confirm-receipt" /&gt;
  * </code>
- *
+ * <p/>
  * This is a state that will be entered from Activiti and execution will flow through to the bean
  * registered in the context as "myBean." To subscribe to that, a POJO need only implement
  * (optionally) {@link ActivitiHandler} and, on a method, add
@@ -38,20 +37,18 @@ import java.lang.annotation.*;
  * tasked with responding to a state. If applied to a bean and there are no {@link ActivitiHandler}
  * annotations present, then one option might be to automatically enlist all public methods
  * as handlers for states whose IDs or names are inferred from the method name:
- *
+ * <p/>
  * <code>public void confirmReceipt(..)</code> would be treated the same as
- *
+ * <p/>
  * <code>@ActivitiState( "confirm-receipt") public void confirmReceipt (..)</code>,
  *
- *  
  * @author Josh Long
  * @since 1.0
  */
-
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
 public @interface ActivitiHandler {
-   String processName () default ""  ;
+	String processName() default "";
 }

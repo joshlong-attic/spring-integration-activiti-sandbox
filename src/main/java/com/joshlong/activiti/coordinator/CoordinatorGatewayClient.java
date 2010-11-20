@@ -1,108 +1,117 @@
+/*
+ * Copyright 2010 the original author or authors
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
 package com.joshlong.activiti.coordinator;
 
 import com.joshlong.activiti.coordinator.registry.ActivitiStateHandlerRegistration;
 import com.joshlong.activiti.coordinator.registry.ActivitiStateHandlerRegistry;
-
 import org.springframework.beans.BeansException;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
 import org.springframework.integration.Message;
 import org.springframework.integration.MessageHeaders;
 import org.springframework.integration.MessagingException;
 import org.springframework.integration.support.MessageBuilder;
 
 import java.lang.reflect.Method;
-
 import java.util.*;
 
 
 /**
- * this component knows what to do to handle coordinating inbound messages that have come from the
- * {@link CoordinatorGatewayProducer}
+ * handles coordinating inbound messages that have come from the {@link CoordinatorGatewayProducer}
  *
  * @author Josh Long
  * @since 1.0
  */
 public class CoordinatorGatewayClient implements ApplicationContextAware {
-    private volatile ActivitiStateHandlerRegistry registry;
-    private ApplicationContext applicationContext;
+	private volatile ActivitiStateHandlerRegistry registry;
+	private ApplicationContext applicationContext;
 
-    public void setRegistry(ActivitiStateHandlerRegistry registry) {
-        this.registry = registry;
-    }
+	public void setRegistry(ActivitiStateHandlerRegistry registry) {
+		this.registry = registry;
+	}
 
-    public Message<?> processMessage(Message<?> message)
-        throws MessagingException {
-        try {
-            MessageHeaders headers = message.getHeaders();
+	public Message<?> processMessage(Message<?> message)
+			throws MessagingException {
+		try {
+			MessageHeaders headers = message.getHeaders();
 
-            String procName = (String) headers.get(CoordinatorConstants.PROCESS_NAME);
+			String procName = (String) headers.get(CoordinatorConstants.PROCESS_NAME);
 
-            String stateName = (String) headers.get(CoordinatorConstants.STATE_NAME);
+			String stateName = (String) headers.get(CoordinatorConstants.STATE_NAME);
 
-            ActivitiStateHandlerRegistration registration = registry.findRegistrationForProcessAndState(procName,
-                    stateName);
+			ActivitiStateHandlerRegistration registration = registry.findRegistrationForProcessAndState(procName,
+					stateName);
 
-            Object bean = applicationContext.getBean(registration.getBeanName());
+			Object bean = applicationContext.getBean(registration.getBeanName());
 
-            System.out.println("---------------------");
-            System.out.println("handling " + procName + ":" + stateName);
-            System.out.println(registration.toString());
+			System.out.println("---------------------");
+			System.out.println("handling " + procName + ":" + stateName);
+			System.out.println(registration.toString());
 
-            System.out.println("---------------------");
+			System.out.println("---------------------");
 
-            Method method = registration.getHandlerMethod();
-					int size = method.getParameterTypes().length;
-					ArrayList<Object> argsList = new ArrayList<Object>(  );
+			Method method = registration.getHandlerMethod();
+			int size = method.getParameterTypes().length;
+			ArrayList<Object> argsList = new ArrayList<Object>();
 
+			// todo support proc var map
+			//if(registration.requiresProcessVariablesMap())
+			//				argsList.add( registration.getProcessVariablesIndex(),  );
+			Map<Integer, String> processVariablesMap = registration.getProcessVariablesExpected();
 
+			// already has which indexes get which process variables
+			Map<Integer, Object> variables = new HashMap<Integer, Object>();
 
-            // todo support proc var map
-            //if(registration.requiresProcessVariablesMap())
-            //				argsList.add( registration.getProcessVariablesIndex(),  );
-            Map<Integer, String> processVariablesMap = registration.getProcessVariablesExpected();
-					// already has which indexes get which process variables
+			for (Integer i : processVariablesMap.keySet())
+				variables.put(i, headers.get(processVariablesMap.get(i)));
 
-					Map<Integer,Object> variables = new HashMap<Integer,Object> ();
-					for( Integer i : processVariablesMap.keySet())
-							variables.put(i, headers.get( processVariablesMap.get(i)));
+			if (registration.requiresProcessId()) {
+				variables.put(registration.getProcessIdIndex(),
+						headers.get(CoordinatorConstants.PROC_ID));
+			}
 
+			System.out.println(variables.toString());
 
-					if (registration.requiresProcessId()) {
-							variables.put(  registration.getProcessIdIndex(), headers.get(CoordinatorConstants.PROC_ID)) ;
-					}
+			List<Integer> indices = new ArrayList<Integer>(variables.keySet());
+			Collections.sort(indices);
 
-					System.out.println( variables.toString() ) ;
+			argsList.clear();
 
-					List<Integer> indices = new ArrayList<Integer>( variables.keySet() ) ;
-					Collections.sort( indices   );
+			for (Integer idx : indices)
+				argsList.add(variables.get(idx));
 
-					argsList.clear() ;
+			Object[] args = argsList.toArray(new Object[argsList.size()]);
+			Object result = (args.length == 0) ? method.invoke(bean)
+					: method.invoke(bean, args);
 
-					for( Integer idx : indices)
-					argsList.add( variables.get(idx)) ;
+			MessageBuilder builder = MessageBuilder.withPayload(message.getPayload())
+					.copyHeaders(message.getHeaders());
 
+			if (result instanceof Map) {
+				/// todo on the return trip we can update process variables so\
+			}
 
-            Object[] args =  argsList.toArray(new Object[    argsList.size() ]);
-            Object result = args.length == 0 ?method.invoke(bean) : method.invoke(bean, args);
+			return builder.build();
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-            MessageBuilder builder = MessageBuilder.withPayload(message.getPayload())
-                                                   .copyHeaders(message.getHeaders());
-
-            if (result instanceof Map) {
-                /// todo on the return trip we can update process variables so\
-            }
-
-            return builder.build();
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void setApplicationContext(ApplicationContext applicationContext)
-        throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 }
