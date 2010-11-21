@@ -5,6 +5,10 @@
     xmlns:activiti="http://activiti.org/bpmn"
     targetNamespace="http://www.bpmnwithactiviti.org/pizzaorder">
 
+    <!--
+    taken from http://java.dzone.com/articles/tutorial-devoxx-activiti-bpmn 
+    -->
+
   <process id="pizzaCustomerService" name="Order a pizza">
     <startEvent id="theStart"/>
     <sequenceFlow id="flow1" sourceRef="theStart" targetRef="validateOrder" />
