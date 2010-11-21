@@ -11,7 +11,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.util.ClassUtils;
 
 /**
- * Proxies beans with methods annotated with {@link com.joshlong.activiti.coordinator.annotations.ProcessStart}.
+ * Proxies beans with methods annotated with {@link com.joshlong.activiti.coordinator.annotations.StartProcess}.
  * If the method is invoked successfully, the process described by the annotaton is created.
  * Parameters passed to the method annotated with {@link com.joshlong.activiti.coordinator.annotations.ProcessVariable}
  * are passed to the business process.

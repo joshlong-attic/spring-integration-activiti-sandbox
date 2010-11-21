@@ -1,6 +1,6 @@
 package com.joshlong.activiti.coordinator.aop;
 
-import com.joshlong.activiti.coordinator.annotations.ProcessStart;
+import com.joshlong.activiti.coordinator.annotations.StartProcess;
 import com.joshlong.activiti.coordinator.annotations.ProcessVariable;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RuntimeService;
@@ -37,18 +37,18 @@ public class ProcessStartingMethodInterceptor implements MethodInterceptor {
 		this.processEngine = processEngine;
 	}
 
-	boolean shouldReturnProcessInstance( ProcessStart processStart ,MethodInvocation methodInvocation , Object result){
-		return processStart.returnProcessInstance() && (result instanceof ProcessInstance ||
+	boolean shouldReturnProcessInstance( StartProcess startProcess,MethodInvocation methodInvocation , Object result){
+		return startProcess.returnProcessInstance() && (result instanceof ProcessInstance ||
 				methodInvocation.getMethod().getReturnType().isAssignableFrom(ProcessInstance.class));
 	}
 
-	boolean shouldReturnProcessInstanceId( ProcessStart processStart, MethodInvocation methodInvocation, Object result){
-		return processStart.returnProcessInstanceId() && (result instanceof String ||
+	boolean shouldReturnProcessInstanceId( StartProcess startProcess, MethodInvocation methodInvocation, Object result){
+		return startProcess.returnProcessInstanceId() && (result instanceof String ||
 			methodInvocation.getMethod().getReturnType().isAssignableFrom(String.class) );
 	}
 
-	boolean shouldReturnAsyncResultWithProcessInstanceId (ProcessStart processStart, MethodInvocation methodInvocation , Object result) {
-		return processStart.returnProcessInstanceFuture() &&
+	boolean shouldReturnAsyncResultWithProcessInstanceId (StartProcess startProcess, MethodInvocation methodInvocation , Object result) {
+		return startProcess.returnProcessInstanceFuture() &&
 				(result instanceof AsyncResult|| methodInvocation.getMethod().getReturnType().isAssignableFrom(AsyncResult.class));
 	}
 
@@ -56,9 +56,9 @@ public class ProcessStartingMethodInterceptor implements MethodInterceptor {
 
 		Method method = invocation.getMethod();
 
-		ProcessStart processStart = AnnotationUtils.getAnnotation ( method , ProcessStart.class );
+		StartProcess startProcess = AnnotationUtils.getAnnotation ( method , StartProcess.class );
 
-		String processKey = processStart.processKey();
+		String processKey = startProcess.processKey();
 
 		Assert.hasText( processKey , "you must provide the name of process to start");
 
@@ -74,10 +74,10 @@ public class ProcessStartingMethodInterceptor implements MethodInterceptor {
 			if( invocation.getMethod().getReturnType().equals(void.class))
 			return null; 
 
-			if(shouldReturnProcessInstance( processStart, invocation , result))
+			if(shouldReturnProcessInstance(startProcess, invocation , result))
 				return pi;
 
-			if(shouldReturnProcessInstanceId( processStart , invocation , result))
+			if(shouldReturnProcessInstanceId(startProcess, invocation , result))
 				return pId;
 
 		} catch (Throwable th){

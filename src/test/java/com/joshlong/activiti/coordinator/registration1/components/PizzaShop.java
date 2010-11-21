@@ -1,7 +1,7 @@
 package com.joshlong.activiti.coordinator.registration1.components;
 
 import com.joshlong.activiti.coordinator.annotations.ActivitiComponent;
-import com.joshlong.activiti.coordinator.annotations.ProcessStart;
+import com.joshlong.activiti.coordinator.annotations.StartProcess;
 import com.joshlong.activiti.coordinator.annotations.ProcessVariable;
 
 /**
@@ -13,7 +13,7 @@ import com.joshlong.activiti.coordinator.annotations.ProcessVariable;
 @ActivitiComponent
 public class PizzaShop {
 
-	@ProcessStart(processKey = "pizzaCustomerService", returnProcessInstanceId = true)
+	@StartProcess(processKey = "pizzaCustomerService", returnProcessInstanceId = true)
 	public String orderPizzaAndReturnProcessInstance(
 			@ProcessVariable("customerName") String cn,
 			@ProcessVariable("amount") int amount,
@@ -22,7 +22,7 @@ public class PizzaShop {
 		return null;
 	}
 
-	@ProcessStart(processKey = "pizzaCustomerService")
+	@StartProcess(processKey = "pizzaCustomerService")
 	public void orderPizza( @ProcessVariable("customerName") String cn,
 												 @ProcessVariable("amount") int amount ,
 												 @ProcessVariable("pizza") String pizza
