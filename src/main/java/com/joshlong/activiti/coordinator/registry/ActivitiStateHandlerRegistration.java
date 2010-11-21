@@ -23,8 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
- * an instance of a bean discovered to both have an {@link com.joshlong.activiti.coordinator.annotations.ActivitiHandler}
- * and one or more {@link com.joshlong.activiti.coordinator.annotations.ActivitiHandler} annotations present.
+ * an instance of a bean discovered to both have an {@link com.joshlong.activiti.coordinator.annotations.ActivitiComponent}
+ * and one or more {@link com.joshlong.activiti.coordinator.annotations.ActivitiComponent} annotations present.
  * <p/>
  * Describes the metadata extracted from the bean at configuration time
  *

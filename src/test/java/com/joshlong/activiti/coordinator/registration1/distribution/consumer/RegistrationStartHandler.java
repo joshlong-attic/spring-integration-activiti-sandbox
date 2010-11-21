@@ -13,16 +13,14 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package com.joshlong.activiti.coordinator.registration1.consumer;
+package com.joshlong.activiti.coordinator.registration1.distribution.consumer;
 
-import com.joshlong.activiti.coordinator.annotations.ActivitiHandler;
+import com.joshlong.activiti.coordinator.annotations.ActivitiComponent;
 import com.joshlong.activiti.coordinator.annotations.ActivitiState;
 import com.joshlong.activiti.coordinator.annotations.ProcessId;
 import com.joshlong.activiti.coordinator.annotations.ProcessVariable;
 
-import javax.annotation.PostConstruct;
-
-@ActivitiHandler(processName = "customer-fullfillment-process")
+@ActivitiComponent(processKey = "customer-fullfillment-process")
 public class RegistrationStartHandler {
 
 	@ActivitiState(stateName = "start-signup")

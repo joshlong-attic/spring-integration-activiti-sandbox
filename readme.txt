@@ -31,12 +31,12 @@ thoughts:
     // on their behalf by providing a map of process variables
 
     class ... {
-     @Autowired private CustomerService customerService;
+     @Autowired private CustomerService pizzaShop;
 
      @ActivitiStart ("customer-signup-process")
      public Map<String,Object> signupCustomer(  String fn, String ln){
        // your customer logic here to setup state before invocation of the process
-       Customer customer = customerService.createCustomer( fn, ln);
+       Customer customer = pizzaShop.createCustomer( fn, ln);
        Map<String,Object> mapOfProcVars = new HashMap<String,Object>();
        mapOfProcVars.put("customerId", customer.getId());
        return mapOfProcVars ;

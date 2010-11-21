@@ -23,8 +23,7 @@ import java.lang.annotation.*;
  * @author Josh Long
  * @since 1.0
  */
-@Target({ElementType.METHOD
-})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ActivitiState {

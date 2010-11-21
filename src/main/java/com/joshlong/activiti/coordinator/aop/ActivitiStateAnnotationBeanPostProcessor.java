@@ -68,8 +68,7 @@ public class ActivitiStateAnnotationBeanPostProcessor implements BeanPostProcess
 		Assert.notNull(this.beanFactory, "beanFactory must not be null");
 	}
 
-	public Object postProcessBeforeInitialization(Object bean, String beanName)
-			throws BeansException {
+	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		return bean;
 	}
 
@@ -83,17 +82,17 @@ public class ActivitiStateAnnotationBeanPostProcessor implements BeanPostProcess
 		// then get all the annotations
 		// then build the metadata and register the metadata
 		final Class<?> targetClass = AopUtils.getTargetClass(bean);
-		final ActivitiHandler handler = targetClass.getAnnotation(ActivitiHandler.class);
+		final ActivitiComponent component = targetClass.getAnnotation(ActivitiComponent.class);
 
 		ReflectionUtils.doWithMethods(targetClass,
 				new ReflectionUtils.MethodCallback() {
 					@SuppressWarnings("unchecked")
-					public void doWith(Method method)
-							throws IllegalArgumentException, IllegalAccessException {
-						ActivitiState activitiState = AnnotationUtils.getAnnotation(method,
-								ActivitiState.class);
+					public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
 
-						String processName = handler.processName();
+						ActivitiState activitiState = AnnotationUtils.getAnnotation(
+								method, ActivitiState.class);
+
+						String processName = component.processKey();
 
 						if (StringUtils.hasText(activitiState.processName())) {
 							processName = activitiState.processName();
@@ -133,7 +132,6 @@ public class ActivitiStateAnnotationBeanPostProcessor implements BeanPostProcess
 						ActivitiStateHandlerRegistration registration = new ActivitiStateHandlerRegistration(vars,
 								method, bean, stateName, beanName, pvMapIndex,
 								procIdIndex, processName);
-//						System.out.println(registration + "");
 						registry.registerActivitiStateHandler(registration);
 					}
 				},

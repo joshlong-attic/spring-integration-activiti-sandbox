@@ -13,17 +13,14 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package com.joshlong.activiti.coordinator.registration1.consumer;
+package com.joshlong.activiti.coordinator.registration1.distribution.consumer;
 
 import com.joshlong.activiti.coordinator.CoordinatorGatewayClient;
 import com.joshlong.activiti.coordinator.aop.ActivitiStateAnnotationBeanPostProcessor;
-import com.joshlong.activiti.coordinator.registration1.SharedConfiguration;
+import com.joshlong.activiti.coordinator.registration1.distribution.SharedConfiguration;
 import com.joshlong.activiti.coordinator.registry.ActivitiStateHandlerRegistry;
-import org.apache.activemq.spring.ActiveMQConnectionFactoryFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PostConstruct;
 
 
 @Configuration

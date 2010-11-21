@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn"
+    targetNamespace="http://www.bpmnwithactiviti.org/pizzaorder">
+
+  <process id="pizzaCustomerService" name="Order a pizza">
+    <startEvent id="theStart"/>
+    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="validateOrder" />
+    <scriptTask id="validateOrder" scriptFormat="groovy">
+      <script>
+        out:print "Validating pizza order for " + customerName + "\n";
+        if(amount > 10){
+          rejectReason = "That is a little bit too much for us " + amount + " pizzas";
+          pizzaOrderToOven = false;
+        } else {
+          pizzaOrderToOven = true;
+        }
+        out:print "Pizza order was validated with outcome " + pizzaOrderToOven + "\n";
+        if(pizzaOrderToOven == false) {
+          out:print "Reject reason is " + rejectReason + "\n";
+        } else {
+          out:print amount + " " + pizza + " pizzas going to the oven\n";
+        }
+      </script>
+    </scriptTask>
+    <sequenceFlow id="flow2" sourceRef="validateOrder" targetRef="theEnd" />
+    <endEvent id="theEnd" />
+  </process>
+</definitions>

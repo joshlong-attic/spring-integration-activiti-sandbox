@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package com.joshlong.activiti.coordinator.registration1.producer;
+package com.joshlong.activiti.coordinator.registration1.distribution.producer;
 
 import org.activiti.engine.ProcessEngine;
 import org.apache.commons.lang.StringUtils;

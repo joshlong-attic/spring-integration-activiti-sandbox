@@ -27,28 +27,15 @@
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd">
 
 
-    <context:component-scan base-package="com.joshlong.activiti.coordinator.registration1.distribution.producer"/>
 
-    <int:poller default="true">
-        <int:interval-trigger interval="1000"/>
-    </int:poller>
 
-    <int:channel id="requests">
-        <int:queue capacity="10"/>
-    </int:channel>
+    <context:component-scan base-package="com.joshlong.activiti.coordinator.registration1.components"/>
 
-    <int:channel id="serializable-friendly-request">
-        <int:queue capacity="10"/>
-    </int:channel>
+    <!--<bean class="com.joshlong.activiti.coordinator.registration1.ProcessEngineConfiguration"/>
 
-    <int:channel id="replies"/>
-
-    <int:transformer input-channel="requests" ref="serializablePayloadAndHeaderRetainingTransformer" output-channel="serializable-friendly-request"/>
-
-    <jms:outbound-channel-adapter channel="serializable-friendly-request" connection-factory="cf" destination-name="activiti-requests"/>
-
-    <jms:message-driven-channel-adapter channel="replies" concurrent-consumers="5" connection-factory="cf" destination-name="activiti-replies"/>
-
+    <bean class="com.joshlong.activiti.coordinator.aop.ProcessStartAnnotationBeanPostProcessor">
+        <property name="processEngine" ref="processEngine"/>
+    </bean>-->
 
 
 </beans>

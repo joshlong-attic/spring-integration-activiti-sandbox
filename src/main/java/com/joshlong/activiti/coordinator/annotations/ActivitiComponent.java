@@ -32,9 +32,9 @@ import java.lang.annotation.*;
  * <p/>
  * This is a state that will be entered from Activiti and execution will flow through to the bean
  * registered in the context as "myBean." To subscribe to that, a POJO need only implement
- * (optionally) {@link ActivitiHandler} and, on a method, add
+ * (optionally) {@link ActivitiComponent} and, on a method, add
  * {@link ActivitiState} to indicate that the method in particular is
- * tasked with responding to a state. If applied to a bean and there are no {@link ActivitiHandler}
+ * tasked with responding to a state. If applied to a bean and there are no {@link ActivitiComponent}
  * annotations present, then one option might be to automatically enlist all public methods
  * as handlers for states whose IDs or names are inferred from the method name:
  * <p/>
@@ -49,6 +49,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
-public @interface ActivitiHandler {
-	String processName() default "";
+public @interface ActivitiComponent {
+	String processKey() default "";
 }

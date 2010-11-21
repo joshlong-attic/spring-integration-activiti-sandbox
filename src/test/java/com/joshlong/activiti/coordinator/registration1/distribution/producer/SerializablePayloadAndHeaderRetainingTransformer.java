@@ -1,4 +1,4 @@
-package com.joshlong.activiti.coordinator.registration1.producer;
+package com.joshlong.activiti.coordinator.registration1.distribution.producer;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.integration.Message;

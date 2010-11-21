@@ -1,11 +1,12 @@
-package com.joshlong.activiti.coordinator.registration1;
+package com.joshlong.activiti.coordinator.registration1.distribution;
 
+import com.joshlong.activiti.coordinator.registration1.ProcessEngineConfiguration;
 import org.apache.activemq.spring.ActiveMQConnectionFactoryFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SharedConfiguration {
+public class SharedConfiguration extends ProcessEngineConfiguration{
 
 	protected String activeMqUrl = "tcp://127.0.0.1:61616";
 

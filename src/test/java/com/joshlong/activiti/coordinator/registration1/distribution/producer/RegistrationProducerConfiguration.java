@@ -13,13 +13,10 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package com.joshlong.activiti.coordinator.registration1.producer;
+package com.joshlong.activiti.coordinator.registration1.distribution.producer;
 
-import com.joshlong.activiti.coordinator.CoordinatorGatewayClient;
 import com.joshlong.activiti.coordinator.CoordinatorGatewayProducer;
-import com.joshlong.activiti.coordinator.aop.ActivitiStateAnnotationBeanPostProcessor;
-import com.joshlong.activiti.coordinator.registration1.SharedConfiguration;
-import com.joshlong.activiti.coordinator.registry.ActivitiStateHandlerRegistry;
+import com.joshlong.activiti.coordinator.registration1.distribution.SharedConfiguration;
 import org.activiti.engine.DbSchemaStrategy;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.impl.cfg.spring.ProcessEngineFactoryBean;

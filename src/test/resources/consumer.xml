@@ -40,7 +40,7 @@
         for now we're manually specifying a service-activator
     -->
 
-    <context:component-scan base-package="com.joshlong.activiti.coordinator.registration1.consumer"/>
+    <context:component-scan base-package="com.joshlong.activiti.coordinator.registration1.distribution.consumer"/>
 
    <int:poller default="true" max-messages-per-poll="10">
       <int:interval-trigger interval="1000"/>
