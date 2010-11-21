@@ -3,8 +3,6 @@ package com.joshlong.activiti.coordinator.registration1.components;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-
 /**
  * @author Josh Long
  * @since 1.0
@@ -17,6 +15,9 @@ public class Main {
 		ClassPathXmlApplicationContext classPathXmlApplicationContext =
 				new ClassPathXmlApplicationContext("components1.xml") ;
 		PizzaShop pizzaShop = classPathXmlApplicationContext.getBean( PizzaShop.class);
-		pizzaShop.orderPizza("josh long", 23) ;
+		pizzaShop.orderPizza("josh long",  3 , "pepperoni") ;
+
+		System.out.println( "pizza order receipt: " +
+				pizzaShop.orderPizzaAndReturnProcessInstance("Josh Long",10, "cheese")) ;
 	}
 }
