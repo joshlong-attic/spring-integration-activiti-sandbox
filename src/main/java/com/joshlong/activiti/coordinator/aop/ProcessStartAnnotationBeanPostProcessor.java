@@ -26,7 +26,7 @@ public class ProcessStartAnnotationBeanPostProcessor extends ProxyConfig impleme
 	private volatile ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 
 	/**
-	 * the process engine as created by a {@link org.activiti.engine.impl.cfg.spring.ProcessEngineFactoryBean}
+	 * the process engine as created by a {@link org.activiti.spring.ProcessEngineFactoryBean}
 	 */
 	private ProcessEngine processEngine;
 

@@ -15,9 +15,11 @@
  */
 package com.joshlong.activiti.coordinator;
 
+import org.activiti.engine.impl.pvm.PvmProcessDefinition;
+import org.activiti.engine.impl.pvm.delegate.ActivityExecution;
 import org.activiti.engine.impl.repository.ProcessDefinitionEntity;
-import org.activiti.pvm.activity.ActivityExecution;
-import org.activiti.pvm.process.PvmProcessDefinition;
+//import org.activiti.pvm.activity.ActivityExecution;
+//import org.activiti.pvm.process.PvmProcessDefinition;
 import org.springframework.integration.activiti.gateway.AsyncActivityBehaviorMessagingGateway;
 import org.springframework.util.StringUtils;
 

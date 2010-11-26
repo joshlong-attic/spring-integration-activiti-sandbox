@@ -6,17 +6,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SharedConfiguration extends ProcessEngineConfiguration{
+public class SharedConfiguration extends ProcessEngineConfiguration {
 
 	protected String activeMqUrl = "tcp://127.0.0.1:61616";
 
 	@Bean(name = "cf")
-	public ActiveMQConnectionFactoryFactoryBean connectionFactory(){
-		ActiveMQConnectionFactoryFactoryBean activeMQConnectionFactoryFactoryBean =
-				new ActiveMQConnectionFactoryFactoryBean();
-		activeMQConnectionFactoryFactoryBean.setTcpHostAndPort( this.activeMqUrl );
-//		System.out.println( getClass() + " connectionFactory started") ;
-		return activeMQConnectionFactoryFactoryBean ;
+	public ActiveMQConnectionFactoryFactoryBean connectionFactory() {
+		ActiveMQConnectionFactoryFactoryBean amq = new ActiveMQConnectionFactoryFactoryBean();
+		amq.setTcpHostAndPort(this.activeMqUrl);
+		return amq;
 	}
 
 }

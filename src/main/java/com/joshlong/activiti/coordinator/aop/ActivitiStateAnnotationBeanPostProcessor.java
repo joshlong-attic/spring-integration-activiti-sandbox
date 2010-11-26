@@ -77,7 +77,7 @@ public class ActivitiStateAnnotationBeanPostProcessor implements BeanPostProcess
 	}
 
 	public Object postProcessAfterInitialization(final Object bean,
-																							 final String beanName) throws BeansException {
+	                                             final String beanName) throws BeansException {
 		// first sift through and get all the methods
 		// then get all the annotations
 		// then build the metadata and register the metadata
@@ -89,8 +89,7 @@ public class ActivitiStateAnnotationBeanPostProcessor implements BeanPostProcess
 					@SuppressWarnings("unchecked")
 					public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
 
-						ActivitiState activitiState = AnnotationUtils.getAnnotation(
-								method, ActivitiState.class);
+						ActivitiState activitiState = AnnotationUtils.getAnnotation( method, ActivitiState.class);
 
 						String processName = component.processKey();
 

@@ -26,7 +26,7 @@ import java.util.Map;
 public class ProcessStartingMethodInterceptor implements MethodInterceptor {
 
 	/**
-	 * injected reference - can be obtained via a {@link org.activiti.engine.impl.cfg.spring.ProcessEngineFactoryBean}
+	 * injected reference - can be obtained via a {@link org.activiti.spring.ProcessEngineFactoryBean}
 	 */
 	protected ProcessEngine processEngine ;
 
@@ -47,6 +47,7 @@ public class ProcessStartingMethodInterceptor implements MethodInterceptor {
 			methodInvocation.getMethod().getReturnType().isAssignableFrom(String.class) );
 	}
 
+	@SuppressWarnings("unused")
 	boolean shouldReturnAsyncResultWithProcessInstanceId (StartProcess startProcess, MethodInvocation methodInvocation , Object result) {
 		return startProcess.returnProcessInstanceFuture() &&
 				(result instanceof AsyncResult|| methodInvocation.getMethod().getReturnType().isAssignableFrom(AsyncResult.class));
